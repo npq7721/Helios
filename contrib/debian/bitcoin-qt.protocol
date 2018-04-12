@@ -1,6 +1,6 @@
 [Protocol]
-exec=raven-qt '%u'
-protocol=raven
+exec=helios-qt '%u'
+protocol=helios
 input=none
 output=none
 helper=true

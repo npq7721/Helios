@@ -1,10 +1,10 @@
 // Copyright (c) 2016 The Bitcoin Core developers
-// Copyright (c) 2017 The Raven Core developers
+// Copyright (c) 2017 The Helios Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef RAVEN_THREADINTERRUPT_H
-#define RAVEN_THREADINTERRUPT_H
+#ifndef helios_THREADINTERRUPT_H
+#define helios_THREADINTERRUPT_H
 
 #include <atomic>
 #include <chrono>
@@ -32,4 +32,4 @@ private:
     std::atomic<bool> flag;
 };
 
-#endif //RAVEN_THREADINTERRUPT_H
+#endif //helios_THREADINTERRUPT_H

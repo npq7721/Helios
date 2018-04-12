@@ -1,15 +1,15 @@
 [Unit]
-Description=Raven's distributed currency daemon
+Description=Helios's distributed currency daemon
 After=network.target
 
 [Service]
-User=raven
-Group=raven
+User=helios
+Group=helios
 
 Type=forking
-PIDFile=/var/lib/ravend/ravend.pid
-ExecStart=/usr/bin/ravend -daemon -pid=/var/lib/ravend/ravend.pid \
--conf=/etc/raven/raven.conf -datadir=/var/lib/ravend -disablewallet
+PIDFile=/var/lib/heliosd/heliosd.pid
+ExecStart=/usr/bin/heliosd -daemon -pid=/var/lib/heliosd/heliosd.pid \
+-conf=/etc/helios/helios.conf -datadir=/var/lib/heliosd -disablewallet
 
 Restart=always
 PrivateTmp=true

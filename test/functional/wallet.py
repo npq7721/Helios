@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
 # Copyright (c) 2014-2016 The Bitcoin Core developers
-# Copyright (c) 2017 The Raven Core developers
+# Copyright (c) 2017 The Helios Core developers
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
 """Test the wallet."""
-from test_framework.test_framework import RavenTestFramework
+from test_framework.test_framework import HeliosTestFramework
 from test_framework.util import *
 
-class WalletTest(RavenTestFramework):
+class WalletTest(HeliosTestFramework):
     def set_test_params(self):
         self.num_nodes = 4
         self.setup_clean_chain = True
@@ -355,7 +355,7 @@ class WalletTest(RavenTestFramework):
             '-reindex',
             '-zapwallettxes=1',
             '-zapwallettxes=2',
-            # disabled until issue is fixed: https://github.com/RavenProject/Ravencoin/issues/7463
+            # disabled until issue is fixed: https://github.com/HeliosProject/Helioscoin/issues/7463
             # '-salvagewallet',
         ]
         chainlimit = 6

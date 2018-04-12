@@ -52,7 +52,7 @@
     </message>
     </context>
 <context>
-    <name>RavenGUI</name>
+    <name>HeliosGUI</name>
     <message>
         <source>&amp;Overview</source>
         <translation>&amp;கண்ணோட்டம்</translation>
@@ -90,8 +90,8 @@
         <translation>&amp;செய்தியை சரிசெய்...</translation>
     </message>
     <message>
-        <source>Raven</source>
-        <translation>Raven</translation>
+        <source>Helios</source>
+        <translation>Helios</translation>
     </message>
     <message>
         <source>Wallet</source>
@@ -706,10 +706,10 @@
     <name>WalletView</name>
     </context>
 <context>
-    <name>raven-core</name>
+    <name>helios-core</name>
     <message>
-        <source>Raven Core</source>
-        <translation>Raven மையம்</translation>
+        <source>Helios Core</source>
+        <translation>Helios மையம்</translation>
     </message>
     <message>
         <source>(default: %u)</source>

@@ -1,11 +1,11 @@
 Sample configuration files for:
 ```
-SystemD: ravend.service
-Upstart: ravend.conf
-OpenRC:  ravend.openrc
-         ravend.openrcconf
-CentOS:  ravend.init
-OS X:    org.raven.ravend.plist
+SystemD: heliosd.service
+Upstart: heliosd.conf
+OpenRC:  heliosd.openrc
+         heliosd.openrcconf
+CentOS:  heliosd.init
+OS X:    org.helios.heliosd.plist
 ```
 have been made available to assist packagers in creating node packages here.
 

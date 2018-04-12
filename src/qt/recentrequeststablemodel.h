@@ -1,10 +1,10 @@
 // Copyright (c) 2011-2016 The Bitcoin Core developers
-// Copyright (c) 2017 The Raven Core developers
+// Copyright (c) 2017 The Helios Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef RAVEN_QT_RECENTREQUESTSTABLEMODEL_H
-#define RAVEN_QT_RECENTREQUESTSTABLEMODEL_H
+#ifndef helios_QT_RECENTREQUESTSTABLEMODEL_H
+#define helios_QT_RECENTREQUESTSTABLEMODEL_H
 
 #include "walletmodel.h"
 
@@ -53,7 +53,7 @@ private:
     Qt::SortOrder order;
 };
 
-/** Model for list of recently generated payment requests / raven: URIs.
+/** Model for list of recently generated payment requests / helios: URIs.
  * Part of wallet model.
  */
 class RecentRequestsTableModel: public QAbstractTableModel
@@ -105,4 +105,4 @@ private:
     QString getAmountTitle();
 };
 
-#endif // RAVEN_QT_RECENTREQUESTSTABLEMODEL_H
+#endif // helios_QT_RECENTREQUESTSTABLEMODEL_H

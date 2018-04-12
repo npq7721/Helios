@@ -1,99 +1,99 @@
 # Copyright (c) 2013-2016 The Bitcoin Core developers
-# Copyright (c) 2017 The Raven Core developers
+# Copyright (c) 2017 The Helios Core developers
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-bin_PROGRAMS += qt/raven-qt
-EXTRA_LIBRARIES += qt/libravenqt.a
+bin_PROGRAMS += qt/helios-qt
+EXTRA_LIBRARIES += qt/libheliosqt.a
 
-# raven qt core #
+# helios qt core #
 QT_TS = \
-  qt/locale/raven_af.ts \
-  qt/locale/raven_af_ZA.ts \
-  qt/locale/raven_ar.ts \
-  qt/locale/raven_be_BY.ts \
-  qt/locale/raven_bg_BG.ts \
-  qt/locale/raven_bg.ts \
-  qt/locale/raven_ca_ES.ts \
-  qt/locale/raven_ca.ts \
-  qt/locale/raven_ca@valencia.ts \
-  qt/locale/raven_cs.ts \
-  qt/locale/raven_cy.ts \
-  qt/locale/raven_da.ts \
-  qt/locale/raven_de.ts \
-  qt/locale/raven_el_GR.ts \
-  qt/locale/raven_el.ts \
-  qt/locale/raven_en_GB.ts \
-  qt/locale/raven_en.ts \
-  qt/locale/raven_eo.ts \
-  qt/locale/raven_es_AR.ts \
-  qt/locale/raven_es_CL.ts \
-  qt/locale/raven_es_CO.ts \
-  qt/locale/raven_es_DO.ts \
-  qt/locale/raven_es_ES.ts \
-  qt/locale/raven_es_MX.ts \
-  qt/locale/raven_es.ts \
-  qt/locale/raven_es_UY.ts \
-  qt/locale/raven_es_VE.ts \
-  qt/locale/raven_et_EE.ts \
-  qt/locale/raven_et.ts \
-  qt/locale/raven_eu_ES.ts \
-  qt/locale/raven_fa_IR.ts \
-  qt/locale/raven_fa.ts \
-  qt/locale/raven_fi.ts \
-  qt/locale/raven_fr_CA.ts \
-  qt/locale/raven_fr_FR.ts \
-  qt/locale/raven_fr.ts \
-  qt/locale/raven_gl.ts \
-  qt/locale/raven_he.ts \
-  qt/locale/raven_hi_IN.ts \
-  qt/locale/raven_hr.ts \
-  qt/locale/raven_hu.ts \
-  qt/locale/raven_id_ID.ts \
-  qt/locale/raven_it_IT.ts \
-  qt/locale/raven_it.ts \
-  qt/locale/raven_ja.ts \
-  qt/locale/raven_ka.ts \
-  qt/locale/raven_kk_KZ.ts \
-  qt/locale/raven_ko_KR.ts \
-  qt/locale/raven_ku_IQ.ts \
-  qt/locale/raven_ky.ts \
-  qt/locale/raven_la.ts \
-  qt/locale/raven_lt.ts \
-  qt/locale/raven_lv_LV.ts \
-  qt/locale/raven_mk_MK.ts \
-  qt/locale/raven_mn.ts \
-  qt/locale/raven_ms_MY.ts \
-  qt/locale/raven_nb.ts \
-  qt/locale/raven_ne.ts \
-  qt/locale/raven_nl.ts \
-  qt/locale/raven_pam.ts \
-  qt/locale/raven_pl.ts \
-  qt/locale/raven_pt_BR.ts \
-  qt/locale/raven_pt_PT.ts \
-  qt/locale/raven_ro_RO.ts \
-  qt/locale/raven_ro.ts \
-  qt/locale/raven_ru_RU.ts \
-  qt/locale/raven_ru.ts \
-  qt/locale/raven_sk.ts \
-  qt/locale/raven_sl_SI.ts \
-  qt/locale/raven_sq.ts \
-  qt/locale/raven_sr@latin.ts \
-  qt/locale/raven_sr.ts \
-  qt/locale/raven_sv.ts \
-  qt/locale/raven_ta.ts \
-  qt/locale/raven_th_TH.ts \
-  qt/locale/raven_tr_TR.ts \
-  qt/locale/raven_tr.ts \
-  qt/locale/raven_uk.ts \
-  qt/locale/raven_ur_PK.ts \
-  qt/locale/raven_uz@Cyrl.ts \
-  qt/locale/raven_vi.ts \
-  qt/locale/raven_vi_VN.ts \
-  qt/locale/raven_zh_CN.ts \
-  qt/locale/raven_zh_HK.ts \
-  qt/locale/raven_zh.ts \
-  qt/locale/raven_zh_TW.ts
+  qt/locale/helios_af.ts \
+  qt/locale/helios_af_ZA.ts \
+  qt/locale/helios_ar.ts \
+  qt/locale/helios_be_BY.ts \
+  qt/locale/helios_bg_BG.ts \
+  qt/locale/helios_bg.ts \
+  qt/locale/helios_ca_ES.ts \
+  qt/locale/helios_ca.ts \
+  qt/locale/helios_ca@valencia.ts \
+  qt/locale/helios_cs.ts \
+  qt/locale/helios_cy.ts \
+  qt/locale/helios_da.ts \
+  qt/locale/helios_de.ts \
+  qt/locale/helios_el_GR.ts \
+  qt/locale/helios_el.ts \
+  qt/locale/helios_en_GB.ts \
+  qt/locale/helios_en.ts \
+  qt/locale/helios_eo.ts \
+  qt/locale/helios_es_AR.ts \
+  qt/locale/helios_es_CL.ts \
+  qt/locale/helios_es_CO.ts \
+  qt/locale/helios_es_DO.ts \
+  qt/locale/helios_es_ES.ts \
+  qt/locale/helios_es_MX.ts \
+  qt/locale/helios_es.ts \
+  qt/locale/helios_es_UY.ts \
+  qt/locale/helios_es_VE.ts \
+  qt/locale/helios_et_EE.ts \
+  qt/locale/helios_et.ts \
+  qt/locale/helios_eu_ES.ts \
+  qt/locale/helios_fa_IR.ts \
+  qt/locale/helios_fa.ts \
+  qt/locale/helios_fi.ts \
+  qt/locale/helios_fr_CA.ts \
+  qt/locale/helios_fr_FR.ts \
+  qt/locale/helios_fr.ts \
+  qt/locale/helios_gl.ts \
+  qt/locale/helios_he.ts \
+  qt/locale/helios_hi_IN.ts \
+  qt/locale/helios_hr.ts \
+  qt/locale/helios_hu.ts \
+  qt/locale/helios_id_ID.ts \
+  qt/locale/helios_it_IT.ts \
+  qt/locale/helios_it.ts \
+  qt/locale/helios_ja.ts \
+  qt/locale/helios_ka.ts \
+  qt/locale/helios_kk_KZ.ts \
+  qt/locale/helios_ko_KR.ts \
+  qt/locale/helios_ku_IQ.ts \
+  qt/locale/helios_ky.ts \
+  qt/locale/helios_la.ts \
+  qt/locale/helios_lt.ts \
+  qt/locale/helios_lv_LV.ts \
+  qt/locale/helios_mk_MK.ts \
+  qt/locale/helios_mn.ts \
+  qt/locale/helios_ms_MY.ts \
+  qt/locale/helios_nb.ts \
+  qt/locale/helios_ne.ts \
+  qt/locale/helios_nl.ts \
+  qt/locale/helios_pam.ts \
+  qt/locale/helios_pl.ts \
+  qt/locale/helios_pt_BR.ts \
+  qt/locale/helios_pt_PT.ts \
+  qt/locale/helios_ro_RO.ts \
+  qt/locale/helios_ro.ts \
+  qt/locale/helios_ru_RU.ts \
+  qt/locale/helios_ru.ts \
+  qt/locale/helios_sk.ts \
+  qt/locale/helios_sl_SI.ts \
+  qt/locale/helios_sq.ts \
+  qt/locale/helios_sr@latin.ts \
+  qt/locale/helios_sr.ts \
+  qt/locale/helios_sv.ts \
+  qt/locale/helios_ta.ts \
+  qt/locale/helios_th_TH.ts \
+  qt/locale/helios_tr_TR.ts \
+  qt/locale/helios_tr.ts \
+  qt/locale/helios_uk.ts \
+  qt/locale/helios_ur_PK.ts \
+  qt/locale/helios_uz@Cyrl.ts \
+  qt/locale/helios_vi.ts \
+  qt/locale/helios_vi_VN.ts \
+  qt/locale/helios_zh_CN.ts \
+  qt/locale/helios_zh_HK.ts \
+  qt/locale/helios_zh.ts \
+  qt/locale/helios_zh_TW.ts
 
 QT_FORMS_UI = \
   qt/forms/addressbookpage.ui \
@@ -119,10 +119,10 @@ QT_MOC_CPP = \
   qt/moc_addresstablemodel.cpp \
   qt/moc_askpassphrasedialog.cpp \
   qt/moc_bantablemodel.cpp \
-  qt/moc_ravenaddressvalidator.cpp \
-  qt/moc_ravenamountfield.cpp \
-  qt/moc_ravengui.cpp \
-  qt/moc_ravenunits.cpp \
+  qt/moc_heliosaddressvalidator.cpp \
+  qt/moc_heliosamountfield.cpp \
+  qt/moc_heliosgui.cpp \
+  qt/moc_heliosunits.cpp \
   qt/moc_callback.cpp \
   qt/moc_clientmodel.cpp \
   qt/moc_coincontroldialog.cpp \
@@ -162,36 +162,36 @@ QT_MOC_CPP = \
   qt/moc_walletmodel.cpp \
   qt/moc_walletview.cpp
 
-RAVEN_MM = \
+helios_MM = \
   qt/macdockiconhandler.mm \
   qt/macnotificationhandler.mm
 
 QT_MOC = \
-  qt/raven.moc \
-  qt/ravenamountfield.moc \
+  qt/helios.moc \
+  qt/heliosamountfield.moc \
   qt/callback.moc \
   qt/intro.moc \
   qt/overviewpage.moc \
   qt/rpcconsole.moc
 
-QT_QRC_CPP = qt/qrc_raven.cpp
-QT_QRC = qt/raven.qrc
-QT_QRC_LOCALE_CPP = qt/qrc_raven_locale.cpp
-QT_QRC_LOCALE = qt/raven_locale.qrc
+QT_QRC_CPP = qt/qrc_helios.cpp
+QT_QRC = qt/helios.qrc
+QT_QRC_LOCALE_CPP = qt/qrc_helios_locale.cpp
+QT_QRC_LOCALE = qt/helios_locale.qrc
 
 PROTOBUF_CC = qt/paymentrequest.pb.cc
 PROTOBUF_H = qt/paymentrequest.pb.h
 PROTOBUF_PROTO = qt/paymentrequest.proto
 
-RAVEN_QT_H = \
+helios_QT_H = \
   qt/addressbookpage.h \
   qt/addresstablemodel.h \
   qt/askpassphrasedialog.h \
   qt/bantablemodel.h \
-  qt/ravenaddressvalidator.h \
-  qt/ravenamountfield.h \
-  qt/ravengui.h \
-  qt/ravenunits.h \
+  qt/heliosaddressvalidator.h \
+  qt/heliosamountfield.h \
+  qt/heliosgui.h \
+  qt/heliosunits.h \
   qt/callback.h \
   qt/clientmodel.h \
   qt/coincontroldialog.h \
@@ -243,9 +243,9 @@ RES_ICONS = \
   qt/res/icons/address-book.png \
   qt/res/icons/about.png \
   qt/res/icons/about_qt.png \
-  qt/res/icons/raven.ico \
-  qt/res/icons/raven_testnet.ico \
-  qt/res/icons/raven.png \
+  qt/res/icons/helios.ico \
+  qt/res/icons/helios_testnet.ico \
+  qt/res/icons/helios.png \
   qt/res/icons/chevron.png \
   qt/res/icons/clock1.png \
   qt/res/icons/clock2.png \
@@ -295,12 +295,12 @@ RES_ICONS = \
   qt/res/icons/warning.png \
   qt/res/icons/verify.png
 
-RAVEN_QT_BASE_CPP = \
+helios_QT_BASE_CPP = \
   qt/bantablemodel.cpp \
-  qt/ravenaddressvalidator.cpp \
-  qt/ravenamountfield.cpp \
-  qt/ravengui.cpp \
-  qt/ravenunits.cpp \
+  qt/heliosaddressvalidator.cpp \
+  qt/heliosamountfield.cpp \
+  qt/heliosgui.cpp \
+  qt/heliosunits.cpp \
   qt/clientmodel.cpp \
   qt/csvmodelwriter.cpp \
   qt/guiutil.cpp \
@@ -319,9 +319,9 @@ RAVEN_QT_BASE_CPP = \
   qt/trafficgraphwidget.cpp \
   qt/utilitydialog.cpp
 
-RAVEN_QT_WINDOWS_CPP = qt/winshutdownmonitor.cpp
+helios_QT_WINDOWS_CPP = qt/winshutdownmonitor.cpp
 
-RAVEN_QT_WALLET_CPP = \
+helios_QT_WALLET_CPP = \
   qt/addressbookpage.cpp \
   qt/addresstablemodel.cpp \
   qt/askpassphrasedialog.cpp \
@@ -349,31 +349,31 @@ RAVEN_QT_WALLET_CPP = \
   qt/walletmodeltransaction.cpp \
   qt/walletview.cpp
 
-RAVEN_QT_CPP = $(RAVEN_QT_BASE_CPP)
+helios_QT_CPP = $(helios_QT_BASE_CPP)
 if TARGET_WINDOWS
-RAVEN_QT_CPP += $(RAVEN_QT_WINDOWS_CPP)
+helios_QT_CPP += $(helios_QT_WINDOWS_CPP)
 endif
 if ENABLE_WALLET
-RAVEN_QT_CPP += $(RAVEN_QT_WALLET_CPP)
+helios_QT_CPP += $(helios_QT_WALLET_CPP)
 endif
 
 RES_IMAGES = 
 
 RES_MOVIES = $(wildcard $(srcdir)/qt/res/movies/spinner-*.png)
 
-RAVEN_RC = qt/res/raven-qt-res.rc
+helios_RC = qt/res/helios-qt-res.rc
 
-RAVEN_QT_INCLUDES = -I$(builddir)/qt -I$(srcdir)/qt -I$(srcdir)/qt/forms \
+helios_QT_INCLUDES = -I$(builddir)/qt -I$(srcdir)/qt -I$(srcdir)/qt/forms \
   -I$(builddir)/qt/forms -DQT_NO_KEYWORDS
 
-qt_libravenqt_a_CPPFLAGS = $(AM_CPPFLAGS) $(RAVEN_INCLUDES) $(RAVEN_QT_INCLUDES) \
+qt_libheliosqt_a_CPPFLAGS = $(AM_CPPFLAGS) $(helios_INCLUDES) $(helios_QT_INCLUDES) \
   $(QT_INCLUDES) $(QT_DBUS_INCLUDES) $(PROTOBUF_CFLAGS) $(QR_CFLAGS)
-qt_libravenqt_a_CXXFLAGS = $(AM_CXXFLAGS) $(QT_PIE_FLAGS)
+qt_libheliosqt_a_CXXFLAGS = $(AM_CXXFLAGS) $(QT_PIE_FLAGS)
 
-qt_libravenqt_a_SOURCES = $(RAVEN_QT_CPP) $(RAVEN_QT_H) $(QT_FORMS_UI) \
+qt_libheliosqt_a_SOURCES = $(helios_QT_CPP) $(helios_QT_H) $(QT_FORMS_UI) \
   $(QT_QRC) $(QT_QRC_LOCALE) $(QT_TS) $(PROTOBUF_PROTO) $(RES_ICONS) $(RES_IMAGES) $(RES_MOVIES)
 
-nodist_qt_libravenqt_a_SOURCES = $(QT_MOC_CPP) $(QT_MOC) $(PROTOBUF_CC) \
+nodist_qt_libheliosqt_a_SOURCES = $(QT_MOC_CPP) $(QT_MOC) $(PROTOBUF_CC) \
   $(PROTOBUF_H) $(QT_QRC_CPP) $(QT_QRC_LOCALE_CPP)
 
 # forms/foo.h -> forms/ui_foo.h
@@ -382,71 +382,71 @@ QT_FORMS_H=$(join $(dir $(QT_FORMS_UI)),$(addprefix ui_, $(notdir $(QT_FORMS_UI:
 # Most files will depend on the forms and moc files as includes. Generate them
 # before anything else.
 $(QT_MOC): $(QT_FORMS_H)
-$(qt_libravenqt_a_OBJECTS) $(qt_raven_qt_OBJECTS) : | $(QT_MOC)
+$(qt_libheliosqt_a_OBJECTS) $(qt_helios_qt_OBJECTS) : | $(QT_MOC)
 
 #Generating these with a half-written protobuf header leads to wacky results.
 #This makes sure it's done.
 $(QT_MOC): $(PROTOBUF_H)
 $(QT_MOC_CPP): $(PROTOBUF_H)
 
-# raven-qt binary #
-qt_raven_qt_CPPFLAGS = $(AM_CPPFLAGS) $(RAVEN_INCLUDES) $(RAVEN_QT_INCLUDES) \
+# helios-qt binary #
+qt_helios_qt_CPPFLAGS = $(AM_CPPFLAGS) $(helios_INCLUDES) $(helios_QT_INCLUDES) \
   $(QT_INCLUDES) $(PROTOBUF_CFLAGS) $(QR_CFLAGS)
-qt_raven_qt_CXXFLAGS = $(AM_CXXFLAGS) $(QT_PIE_FLAGS)
+qt_helios_qt_CXXFLAGS = $(AM_CXXFLAGS) $(QT_PIE_FLAGS)
 
-qt_raven_qt_SOURCES = qt/raven.cpp
+qt_helios_qt_SOURCES = qt/helios.cpp
 if TARGET_DARWIN
-  qt_raven_qt_SOURCES += $(RAVEN_MM)
+  qt_helios_qt_SOURCES += $(helios_MM)
 endif
 if TARGET_WINDOWS
-  qt_raven_qt_SOURCES += $(RAVEN_RC)
+  qt_helios_qt_SOURCES += $(helios_RC)
 endif
-qt_raven_qt_LDADD = qt/libravenqt.a $(LIBRAVEN_SERVER)
+qt_helios_qt_LDADD = qt/libheliosqt.a $(LIBhelios_SERVER)
 if ENABLE_WALLET
-qt_raven_qt_LDADD += $(LIBRAVEN_WALLET)
+qt_helios_qt_LDADD += $(LIBhelios_WALLET)
 endif
 if ENABLE_ZMQ
-qt_raven_qt_LDADD += $(LIBRAVEN_ZMQ) $(ZMQ_LIBS)
+qt_helios_qt_LDADD += $(LIBhelios_ZMQ) $(ZMQ_LIBS)
 endif
-qt_raven_qt_LDADD += $(LIBRAVEN_CLI) $(LIBRAVEN_COMMON) $(LIBRAVEN_UTIL) $(LIBRAVEN_CONSENSUS) $(LIBRAVEN_CRYPTO) $(LIBUNIVALUE) $(LIBLEVELDB) $(LIBLEVELDB_SSE42) $(LIBMEMENV) \
+qt_helios_qt_LDADD += $(LIBhelios_CLI) $(LIBhelios_COMMON) $(LIBhelios_UTIL) $(LIBhelios_CONSENSUS) $(LIBhelios_CRYPTO) $(LIBUNIVALUE) $(LIBLEVELDB) $(LIBLEVELDB_SSE42) $(LIBMEMENV) \
   $(BOOST_LIBS) $(QT_LIBS) $(QT_DBUS_LIBS) $(QR_LIBS) $(PROTOBUF_LIBS) $(BDB_LIBS) $(SSL_LIBS) $(CRYPTO_LIBS) $(MINIUPNPC_LIBS) $(LIBSECP256K1) \
   $(EVENT_PTHREADS_LIBS) $(EVENT_LIBS)
-qt_raven_qt_LDFLAGS = $(RELDFLAGS) $(AM_LDFLAGS) $(QT_LDFLAGS) $(LIBTOOL_APP_LDFLAGS)
-qt_raven_qt_LIBTOOLFLAGS = --tag CXX
+qt_helios_qt_LDFLAGS = $(RELDFLAGS) $(AM_LDFLAGS) $(QT_LDFLAGS) $(LIBTOOL_APP_LDFLAGS)
+qt_helios_qt_LIBTOOLFLAGS = --tag CXX
 
 #locale/foo.ts -> locale/foo.qm
 QT_QM=$(QT_TS:.ts=.qm)
 
 SECONDARY: $(QT_QM)
 
-$(srcdir)/qt/ravenstrings.cpp: $(libraven_server_a_SOURCES) $(libraven_wallet_a_SOURCES) $(libraven_common_a_SOURCES) $(libraven_zmq_a_SOURCES) $(libraven_consensus_a_SOURCES) $(libraven_util_a_SOURCES)
+$(srcdir)/qt/heliosstrings.cpp: $(libhelios_server_a_SOURCES) $(libhelios_wallet_a_SOURCES) $(libhelios_common_a_SOURCES) $(libhelios_zmq_a_SOURCES) $(libhelios_consensus_a_SOURCES) $(libhelios_util_a_SOURCES)
 	@test -n $(XGETTEXT) || echo "xgettext is required for updating translations"
 	$(AM_V_GEN) cd $(srcdir); XGETTEXT=$(XGETTEXT) PACKAGE_NAME="$(PACKAGE_NAME)" COPYRIGHT_HOLDERS="$(COPYRIGHT_HOLDERS)" COPYRIGHT_HOLDERS_SUBSTITUTION="$(COPYRIGHT_HOLDERS_SUBSTITUTION)" $(PYTHON) ../share/qt/extract_strings_qt.py $^
 
-translate: $(srcdir)/qt/ravenstrings.cpp $(QT_FORMS_UI) $(QT_FORMS_UI) $(RAVEN_QT_BASE_CPP) qt/raven.cpp $(RAVEN_QT_WINDOWS_CPP) $(RAVEN_QT_WALLET_CPP) $(RAVEN_QT_H) $(RAVEN_MM)
+translate: $(srcdir)/qt/heliosstrings.cpp $(QT_FORMS_UI) $(QT_FORMS_UI) $(helios_QT_BASE_CPP) qt/helios.cpp $(helios_QT_WINDOWS_CPP) $(helios_QT_WALLET_CPP) $(helios_QT_H) $(helios_MM)
 	@test -n $(LUPDATE) || echo "lupdate is required for updating translations"
-	$(AM_V_GEN) QT_SELECT=$(QT_SELECT) $(LUPDATE) $^ -locations relative -no-obsolete -ts $(srcdir)/qt/locale/raven_en.ts
+	$(AM_V_GEN) QT_SELECT=$(QT_SELECT) $(LUPDATE) $^ -locations relative -no-obsolete -ts $(srcdir)/qt/locale/helios_en.ts
 
 $(QT_QRC_LOCALE_CPP): $(QT_QRC_LOCALE) $(QT_QM)
 	@test -f $(RCC)
 	@cp -f $< $(@D)/temp_$(<F)
-	$(AM_V_GEN) QT_SELECT=$(QT_SELECT) $(RCC) -name raven_locale $(@D)/temp_$(<F) | \
+	$(AM_V_GEN) QT_SELECT=$(QT_SELECT) $(RCC) -name helios_locale $(@D)/temp_$(<F) | \
 	  $(SED) -e '/^\*\*.*Created:/d' -e '/^\*\*.*by:/d' > $@
 	@rm $(@D)/temp_$(<F)
 
 $(QT_QRC_CPP): $(QT_QRC) $(QT_FORMS_H) $(RES_ICONS) $(RES_IMAGES) $(RES_MOVIES) $(PROTOBUF_H)
 	@test -f $(RCC)
-	$(AM_V_GEN) QT_SELECT=$(QT_SELECT) $(RCC) -name raven $< | \
+	$(AM_V_GEN) QT_SELECT=$(QT_SELECT) $(RCC) -name helios $< | \
 	  $(SED) -e '/^\*\*.*Created:/d' -e '/^\*\*.*by:/d' > $@
 
-CLEAN_QT = $(nodist_qt_libravenqt_a_SOURCES) $(QT_QM) $(QT_FORMS_H) qt/*.gcda qt/*.gcno
+CLEAN_QT = $(nodist_qt_libheliosqt_a_SOURCES) $(QT_QM) $(QT_FORMS_H) qt/*.gcda qt/*.gcno
 
 CLEANFILES += $(CLEAN_QT)
 
-raven_qt_clean: FORCE
-	rm -f $(CLEAN_QT) $(qt_libravenqt_a_OBJECTS) $(qt_raven_qt_OBJECTS) qt/raven-qt$(EXEEXT) $(LIBRAVENQT)
+helios_qt_clean: FORCE
+	rm -f $(CLEAN_QT) $(qt_libheliosqt_a_OBJECTS) $(qt_helios_qt_OBJECTS) qt/helios-qt$(EXEEXT) $(LIBheliosQT)
 
-raven_qt : qt/raven-qt$(EXEEXT)
+helios_qt : qt/helios-qt$(EXEEXT)
 
 ui_%.h: %.ui
 	@test -f $(UIC)

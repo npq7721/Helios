@@ -1,13 +1,13 @@
 Format: http://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
-Upstream-Name: Raven
+Upstream-Name: Helios
 Upstream-Contact: Satoshi Nakamoto <satoshin@gmx.com>
- irc://#raven@freenode.net
-Source: https://github.com/RavenProject/Ravencoin
+ irc://#helios@freenode.net
+Source: https://github.com/HeliosProject/Helioscoin
 
 Files: *
-Copyright: 2009-2017, Raven Core Developers
+Copyright: 2009-2017, Helios Core Developers
 License: Expat
-Comment: The Raven Core Developers encompasses the current developers listed on raven.org,
+Comment: The Helios Core Developers encompasses the current developers listed on helios.org,
          as well as the numerous contributors to the project.
 
 Files: debian/*
@@ -78,12 +78,12 @@ License: Expat
 Comment: Modifications of Stephan Hutchings Typicons
 
 Files: src/qt/res/icons/about.png
-       src/qt/res/icons/raven.*
-       share/pixmaps/raven*
-       src/qt/res/src/raven.svg
+       src/qt/res/icons/helios.*
+       share/pixmaps/helios*
+       src/qt/res/src/helios.svg
 Copyright: Bitboy, Jonas Schnelli
 License: public-domain
-Comment: Site: https://raventalk.org/?topic=1756.0
+Comment: Site: https://heliostalk.org/?topic=1756.0
 
 
 License: Expat
