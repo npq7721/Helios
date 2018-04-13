@@ -1,0 +1,13 @@
+[Desktop Entry]
+Encoding=UTF-8
+Name=Helios Core
+Comment=Connect to the Helios P2P Network
+Comment[de]=Verbinde mit dem Helios peer-to-peer Netzwerk
+Comment[fr]=Helios, monnaie virtuelle cryptographique pair à pair
+Comment[tr]=Helios, eşten eşe kriptografik sanal para birimi
+Exec=helios-qt %u
+Terminal=false
+Type=Application
+Icon=helios128
+MimeType=x-scheme-handler/helios;
+Categories=Office;Finance;

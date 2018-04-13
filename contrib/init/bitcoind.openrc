@@ -1,0 +1,92 @@
+#!/sbin/runscript
+
+# backward compatibility for existing gentoo layout 
+#
+if [ -d "/var/lib/helios/.helios" ]; then
+	heliosD_DEFAULT_DATADIR="/var/lib/helios/.helios"
+else
+	heliosD_DEFAULT_DATADIR="/var/lib/heliosd"
+fi
+
+heliosD_CONFIGFILE=${heliosD_CONFIGFILE:-/etc/helios/helios.conf}
+heliosD_PIDDIR=${heliosD_PIDDIR:-/var/run/heliosd}
+heliosD_PIDFILE=${heliosD_PIDFILE:-${heliosD_PIDDIR}/heliosd.pid}
+heliosD_DATADIR=${heliosD_DATADIR:-${heliosD_DEFAULT_DATADIR}}
+heliosD_USER=${heliosD_USER:-${helios_USER:-helios}}
+heliosD_GROUP=${heliosD_GROUP:-helios}
+heliosD_BIN=${heliosD_BIN:-/usr/bin/heliosd}
+heliosD_NICE=${heliosD_NICE:-${NICELEVEL:-0}}
+heliosD_OPTS="${heliosD_OPTS:-${helios_OPTS}}"
+
+name="Helios Core Daemon"
+description="Helios cryptocurrency P2P network daemon"
+
+command="/usr/bin/heliosd"
+command_args="-pid=\"${heliosD_PIDFILE}\" \
+		-conf=\"${heliosD_CONFIGFILE}\" \
+		-datadir=\"${heliosD_DATADIR}\" \
+		-daemon \
+		${heliosD_OPTS}"
+
+required_files="${heliosD_CONFIGFILE}"
+start_stop_daemon_args="-u ${heliosD_USER} \
+			-N ${heliosD_NICE} -w 2000"
+pidfile="${heliosD_PIDFILE}"
+
+# The retry schedule to use when stopping the daemon. Could be either
+# a timeout in seconds or multiple signal/timeout pairs (like
+# "SIGKILL/180 SIGTERM/300")
+retry="${heliosD_SIGTERM_TIMEOUT}"
+
+depend() {
+	need localmount net
+}
+
+# verify
+# 1) that the datadir exists and is writable (or create it)
+# 2) that a directory for the pid exists and is writable
+# 3) ownership and permissions on the config file
+start_pre() {
+	checkpath \
+	-d \
+	--mode 0750 \
+	--owner "${heliosD_USER}:${heliosD_GROUP}" \
+	"${heliosD_DATADIR}"
+
+	checkpath \
+	-d \
+	--mode 0755 \
+	--owner "${heliosD_USER}:${heliosD_GROUP}" \
+	"${heliosD_PIDDIR}"
+
+	checkpath -f \
+	-o ${heliosD_USER}:${heliosD_GROUP} \
+	-m 0660 \
+	${heliosD_CONFIGFILE}
+
+	checkconfig || return 1
+}
+
+checkconfig()
+{
+	if ! grep -qs '^rpcpassword=' "${heliosD_CONFIGFILE}" ; then
+		eerror ""
+		eerror "ERROR: You must set a secure rpcpassword to run heliosd."
+		eerror "The setting must appear in ${heliosD_CONFIGFILE}"
+		eerror ""
+		eerror "This password is security critical to securing wallets "
+		eerror "and must not be the same as the rpcuser setting."
+		eerror "You can generate a suitable random password using the following "
+		eerror "command from the shell:"
+		eerror ""
+		eerror "bash -c 'tr -dc a-zA-Z0-9 < /dev/urandom | head -c32 && echo'"
+		eerror ""
+		eerror "It is recommended that you also set alertnotify so you are "
+		eerror "notified of problems:"
+		eerror ""
+		eerror "ie: alertnotify=echo %%s | mail -s \"Helios Alert\"" \
+			"admin@foo.com"
+		eerror ""
+		return 1
+	fi
+}

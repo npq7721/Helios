@@ -1,0 +1,8 @@
+/usr/bin/helios-cli		--	gen_context(system_u:object_r:helios_exec_t,s0)
+/usr/sbin/heliosd		--	gen_context(system_u:object_r:helios_exec_t,s0)
+/usr/lib(64)?/helios/heliosd		--	gen_context(system_u:object_r:helios_exec_t,s0)
+
+/etc/helios(/.*)?		gen_context(system_u:object_r:helios_conf_t,s0)
+/var/lib/helios(/.*)?		gen_context(system_u:object_r:helios_var_lib_t,s0)
+
+(/var)?/run/heliosd(/.*)?   gen_context(system_u:object_r:helios_var_run_t,s0)

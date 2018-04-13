@@ -1,0 +1,11 @@
+[Protocol]
+exec=helios-qt '%u'
+protocol=helios
+input=none
+output=none
+helper=true
+listing=
+reading=false
+writing=false
+makedir=false
+deleting=false

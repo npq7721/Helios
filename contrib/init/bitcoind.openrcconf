@@ -1,0 +1,33 @@
+# /etc/conf.d/heliosd: config file for /etc/init.d/heliosd
+
+# Config file location
+#heliosD_CONFIGFILE="/etc/helios/helios.conf"
+
+# What directory to write pidfile to?  (created and owned by $heliosD_USER)
+#heliosD_PIDDIR="/var/run/heliosd"
+
+# What filename to give the pidfile
+#heliosD_PIDFILE="${heliosD_PIDDIR}/heliosd.pid"
+
+# Where to write heliosd data (be mindful that the blockchain is large)
+#heliosD_DATADIR="/var/lib/heliosd"
+
+# User and group to own heliosd process
+#heliosD_USER="helios"
+#heliosD_GROUP="helios"
+
+# Path to heliosd executable
+#heliosD_BIN="/usr/bin/heliosd"
+
+# Nice value to run heliosd under
+#heliosD_NICE=0
+
+# Additional options (avoid -conf and -datadir, use flags above)
+#heliosD_OPTS=""
+
+# The timeout in seconds OpenRC will wait for heliosd to terminate
+# after a SIGTERM has been raised.
+# Note that this will be mapped as argument to start-stop-daemon's
+# '--retry' option, which means you can specify a retry schedule
+# here. For more information see man 8 start-stop-daemon.
+heliosD_SIGTERM_TIMEOUT=60
