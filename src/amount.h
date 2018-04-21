@@ -11,10 +11,11 @@
 
 /** Amount in satoshis (Can be negative) */
 typedef int64_t CAmount;
+typedef std::map<int, int> BlockRewardMap;
 
 static const CAmount COIN = 100000000;
 static const CAmount CENT = 1000000;
-static const std::map<int, int> BLOCK_REWARD_MAP = {
+static const BlockRewardMap BLOCK_REWARD_MAP = {
 		{86400, 300},
 		{172800, 150}
 };
