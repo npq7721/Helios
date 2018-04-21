@@ -14,6 +14,11 @@ typedef int64_t CAmount;
 
 static const CAmount COIN = 100000000;
 static const CAmount CENT = 1000000;
+static const std::map<int, int> BLOCK_REWARD_MAP = {
+		{86400, 300},
+		{172800, 150}
+};
+static const int REWARD_BLOCK_KEYS[2] = {86400, 172800};
 
 /** No amount larger than this (in satoshi) is valid.
  *

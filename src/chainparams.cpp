@@ -18,6 +18,39 @@
 //TODO: Take these out
 extern double algoHashTotal[16];
 extern int algoHashHits[16];
+// this code require c++11 compiler
+const ParamsConst::DefaultPortsMap ParamsConst::defaultPortsMap = {
+		{"main", 18018},
+		{"test", 18019},
+		{"regtest", 18020}
+};
+
+const ParamsConst::HashGenesisBlockMap ParamsConst::hashGenesisBlockMap = {
+		{"main", "0x"},
+		{"test", "0x"},
+		{"regtest", "0x"}
+};
+
+const ParamsConst::HashMerkleRootkMap ParamsConst::hashMerkleRootMap = {
+		{"main", "0x"},
+		{"test", "0x"},
+		{"regtest", "0x"}
+};
+
+const ParamsConst::StartTimeMap ParamsConst::startTimeMap = {
+		{"main", 0},
+		{"test", 0},
+		{"regtest", 0}
+};
+
+const ParamsConst::NounceMap ParamsConst::nounceMap = {
+		{"main", 0},
+		{"test", 0},
+		{"regtest", 0}
+};
+
+static const bool GENERATE_HASH = true;
+
 
 
 static CBlock CreateGenesisBlock(const char* pszTimestamp, const CScript& genesisOutputScript, uint32_t nTime, uint32_t nNonce, uint32_t nBits, int32_t nVersion, const CAmount& genesisReward)
@@ -101,6 +134,106 @@ bool CChainParams::CSVEnabled() const{
 	return consensus.nCSVEnabled;
 }
 
+class CCommonParams : public CChainParams {
+public:
+	CCommonParams(std::string network) {
+		strNetworkID=network;
+		consensus.nSubsidyHalvingInterval = 2100000;  //~ 4 yrs at 1 min block time
+		consensus.nBIP34Enabled = true;
+		consensus.nBIP65Enabled = true; // 000000000000000004c2b624ed5d7756c508d90fd0da2c7c679febfa6c4735f0
+		consensus.nBIP66Enabled = true;
+		consensus.nSegwitEnabled = true;
+		consensus.nCSVEnabled = true;
+		consensus.powLimit = uint256S("00000fffffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
+		consensus.nPowTargetTimespan = 2016 * 60; // 1.4 days
+		consensus.nPowTargetSpacing = 1 * 60;
+		consensus.fPowAllowMinDifficultyBlocks = false;
+		consensus.fPowNoRetargeting = false;
+		consensus.nRuleChangeActivationThreshold = 1916; // 95% of 2016
+		consensus.nMinerConfirmationWindow = 2016; // nPowTargetTimespan / nPowTargetSpacing
+		consensus.vDeployments[Consensus::DEPLOYMENT_TESTDUMMY].bit = 28;
+		consensus.vDeployments[Consensus::DEPLOYMENT_TESTDUMMY].nStartTime = 1199145601; // January 1, 2008
+		consensus.vDeployments[Consensus::DEPLOYMENT_TESTDUMMY].nTimeout = 1230767999; // December 31, 2008
+
+		 // The best chain should have at least this much work.
+
+		//TODO: This needs to be changed when we re-start the chain
+		//consensus.nMinimumChainWork = uint256S("0x000000000000000000000000000000000000000000000000000000000c000c00");
+
+		//TODO - Set this to genesis block
+		// By default assume that the signatures in ancestors of this block are valid.
+		//consensus.defaultAssumeValid = uint256S("0x0000000000000000003b9ce759c2a087d52abc4266f8f4ebd6d768b89defa50a"); //477890
+
+		/**/
+		// The best chain should have at least this much work.
+		consensus.nMinimumChainWork = uint256S("0x00");
+
+		// By default assume that the signatures in ancestors of this block are valid.
+		consensus.defaultAssumeValid = uint256S("0x00");
+		int startTime = ParamsConst::startTimeMap[network];
+		int nounce = ParamsConst::nounceMap[network];
+		int blockReward = BLOCK_REWARD_MAP[REWARD_BLOCK_KEYS[1]];
+		genesis = CreateGenesisBlock(startTime, nounce, 0x1e00ffff, 4, blockReward * COIN);
+		consensus.hashGenesisBlock = genesis.GetHash();
+		if(GENERATE_HASH) {
+			generateGenesisHashes();
+		}
+		checkGenesis();
+        vSeeds.emplace_back("seed-helios.helioscoin.org", false);
+        vSeeds.emplace_back("seed-helios.bitactivate.com", false);
+		nDefaultPort = ParamsConst::defaultPortsMap[network];
+		checkPoints();
+
+        fDefaultConsistencyChecks = false;
+        fMineBlocksOnDemand = false;
+        fMiningRequiresPeers = true;
+	}
+
+	void checkGenesis() {
+		std::String hashGenesisBlock = ParamsConst::hashGenesisBlockMap[strNetworkID];
+		std::String hashMerkleRoot = ParamsConst::hashMerkleRootMap[strNetworkID];
+		assert(consensus.hashGenesisBlock == uint256S(hashGenesisBlock));
+		assert(genesis.hashMerkleRoot == uint256S(hashGenesisBlock));
+	}
+
+	void generateGenesisHashes() {
+		consensus.hashGenesisBlock = uint256S("0x");
+		std::cout << std::string("Begin calculating Mainnet Genesis Block:\n");
+		LogPrintf("Calculating Mainnet Genesis Block:\n");
+		arith_uint256 hashTarget = arith_uint256().SetCompact(genesis.nBits);
+		uint256 hash;
+		genesis.nNonce = 0;
+		// This will figure out a valid hash and Nonce if you're
+		// creating a different genesis block:
+		// uint256 hashTarget = CBigNum().SetCompact(genesis.nBits).getuint256();
+		// hashTarget.SetCompact(genesis.nBits, &fNegative, &fOverflow).getuint256();
+		// while (genesis.GetHash() > hashTarget)
+		while (UintToArith256(genesis.GetHash()) > hashTarget)
+		{
+			++genesis.nNonce;
+			if (genesis.nNonce == 0)
+			{
+				LogPrintf("NONCE WRAPPED, incrementing time");
+				std::cout << std::string("NONCE WRAPPED, incrementing time:\n");
+				++genesis.nTime;
+			}
+			if (genesis.nNonce % 10000 == 0)
+			{
+				LogPrintf("Mainnet: nonce %08u: hash = %s \n", genesis.nNonce, genesis.GetHash().ToString().c_str());
+				// std::cout << strNetworkID << " nonce: " << genesis.nNonce << " time: " << genesis.nTime << " hash: " << genesis.GetHash().ToString().c_str() << "\n";
+			}
+		}
+		std::cout << "Mainnet ---\n";
+		std::cout << "  nonce: " << genesis.nNonce <<  "\n";
+		std::cout << "   time: " << genesis.nTime << "\n";
+		std::cout << "   hash: " << genesis.GetHash().ToString().c_str() << "\n";
+		std::cout << "   merklehash: "  << genesis.hashMerkleRoot.ToString().c_str() << "\n";
+		// Mainnet --- nonce: 296277 time: 1390095618 hash: 000000bdd771b14e5a031806292305e563956ce2584278de414d9965f6ab54b0
+
+		std::cout << std::string("Finished calculating Mainnet Genesis Block:\n");
+}
+};
+
 
 /**
  * Main network
@@ -113,45 +246,9 @@ bool CChainParams::CSVEnabled() const{
  * + Contains no strange transactions
  */
 
-class CMainParams : public CChainParams {
+class CMainParams : public CCommonParams {
 public:
-    CMainParams() {
-        strNetworkID = "main";
-        consensus.nSubsidyHalvingInterval = 2100000;  //~ 4 yrs at 1 min block time
-        consensus.nBIP34Enabled = true;
-        consensus.nBIP65Enabled = true; // 000000000000000004c2b624ed5d7756c508d90fd0da2c7c679febfa6c4735f0
-        consensus.nBIP66Enabled = true;
-        consensus.nSegwitEnabled = true;
-        consensus.nCSVEnabled = true;
-        consensus.powLimit = uint256S("00000fffffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
-        consensus.nPowTargetTimespan = 2016 * 60; // 1.4 days
-        consensus.nPowTargetSpacing = 1 * 60;
-		consensus.fPowAllowMinDifficultyBlocks = false;
-        consensus.fPowNoRetargeting = false;
-        consensus.nRuleChangeActivationThreshold = 1916; // 95% of 2016
-        consensus.nMinerConfirmationWindow = 2016; // nPowTargetTimespan / nPowTargetSpacing
-        consensus.vDeployments[Consensus::DEPLOYMENT_TESTDUMMY].bit = 28;
-        consensus.vDeployments[Consensus::DEPLOYMENT_TESTDUMMY].nStartTime = 1199145601; // January 1, 2008
-        consensus.vDeployments[Consensus::DEPLOYMENT_TESTDUMMY].nTimeout = 1230767999; // December 31, 2008
-
-    
-
-        // The best chain should have at least this much work.
-        consensus.nMinimumChainWork = uint256S("0x00");
-
-        // By default assume that the signatures in ancestors of this block are valid.
-        consensus.defaultAssumeValid = uint256S("0x00");
-
-
-        // The best chain should have at least this much work.
-    
-        //TODO: This needs to be changed when we re-start the chain
-        //consensus.nMinimumChainWork = uint256S("0x000000000000000000000000000000000000000000000000000000000c000c00");
-
-        //TODO - Set this to genesis block 
-        // By default assume that the signatures in ancestors of this block are valid.
-        //consensus.defaultAssumeValid = uint256S("0x0000000000000000003b9ce759c2a087d52abc4266f8f4ebd6d768b89defa50a"); //477890
-
+    CMainParams() : CCommonParams("main"){
         /**
          * The message start string is designed to be unlikely to occur in normal data.
          * The characters are rarely used upper ASCII, not valid as UTF-8, and produce
@@ -161,20 +258,7 @@ public:
         pchMessageStart[1] = 0x41;
         pchMessageStart[2] = 0x56;
         pchMessageStart[3] = 0x4e;
-        nDefaultPort = 8767;
         nPruneAfterHeight = 100000;
-                  
-        genesis = CreateGenesisBlock(1514999494, 25023712, 0x1e00ffff, 4, 5000 * COIN); 
-
-        consensus.hashGenesisBlock = genesis.GetHash();        
-        //std::cout << consensus.hashGenesisBlock.GetHex() << "\n";
-        //std::cout << "Merkle: " << genesis.hashMerkleRoot.GetHex() << "\n";
-
-        assert(consensus.hashGenesisBlock == uint256S("0x0000006b444bc2f2ffe627be9d9e7e7a0730000870ef6eb6da46c8eae389df90"));
-        assert(genesis.hashMerkleRoot == uint256S("0x28ff00a867739a352523808d301f504bc4547699398d70faf2266a8bae5f3516"));
-
-        vSeeds.emplace_back("seed-helios.helioscoin.org", false); 
-        vSeeds.emplace_back("seed-helios.bitactivate.com", false); 
 
         base58Prefixes[PUBKEY_ADDRESS] = std::vector<unsigned char>(1,60);
         base58Prefixes[SCRIPT_ADDRESS] = std::vector<unsigned char>(1,122);
@@ -185,25 +269,23 @@ public:
         bech32_hrp = "rc";
 
         vFixedSeeds = std::vector<SeedSpec6>(pnSeed6_main, pnSeed6_main + ARRAYLEN(pnSeed6_main));
-
-        fDefaultConsistencyChecks = false;
         fRequireStandard = true;
-        fMineBlocksOnDemand = false;
-        fMiningRequiresPeers = true;
+    }
 
-        checkpointData = (CCheckpointData) {
-            {
-               
-            }
-        };
+    void checkPoints() {
+    	checkpointData = (CCheckpointData) {
+			{
 
-        chainTxData = ChainTxData{
-            // Update as we know more about the contents of the Helios chain
-            1509572692, // * UNIX timestamp of last known number of transactions
-            1,          // * total number of transactions between genesis and that timestamp
-                        //   (the tx=... number in the SetBestChain debug.log lines)
-            3.1         // * estimated number of transactions per second after that timestamp
-        };
+			}
+		};
+
+		chainTxData = ChainTxData{
+			// Update as we know more about the contents of the Helios chain
+			1509572692, // * UNIX timestamp of last known number of transactions
+			1,          // * total number of transactions between genesis and that timestamp
+						//   (the tx=... number in the SetBestChain debug.log lines)
+			3.1         // * estimated number of transactions per second after that timestamp
+		};
     }
 };
 
@@ -245,7 +327,7 @@ public:
         pchMessageStart[2] = 0x4E;
         pchMessageStart[3] = 0x54;
         nDefaultPort = 18767;
-        nPruneAfterHeight = 1000;
+        nPruneAfterHeight = 1000; // don't know what this for. need to investigate
 
         genesis = CreateGenesisBlock(1517350340, 4791361, 0x1e00ffff, 4, 5000 * COIN); 
         consensus.hashGenesisBlock = genesis.GetHash();

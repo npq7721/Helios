@@ -38,6 +38,20 @@ struct ChainTxData {
     double dTxRate;
 };
 
+class ParamsConst {
+	typedef std::map<std::string, std::string> HashGenesisBlockMap;
+	typedef std::map<std::string, std::string> HashMerkleRootkMap;
+	typedef std::map<std::string, int> DefaultPortsMap;
+	typedef std::map<std::string, int> StartTimeMap;
+	typedef std::map<std::string, int> NounceMap;
+
+	static HashGenesisBlockMap hashGenesisBlockMap;
+	static HashMerkleRootkMap hashMerkleRootMap;
+	static DefaultPortsMap defaultPortsMap;
+	static StartTimeMap startTimeMap;
+	static NounceMap nounceMap;
+};
+
 /**
  * CChainParams defines various tweakable parameters of a given instance of the
  * Helios system. There are three: the main network on which people trade goods
@@ -89,6 +103,9 @@ public:
     bool BIP65();
     bool BIP66();
     bool CSVEnabled() const;
+    void checkGenesis(){};
+    void checkPoints(){};
+    void generateGenesisHashes();
 protected:
     CChainParams() {}
 
