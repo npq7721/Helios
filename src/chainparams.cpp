@@ -19,31 +19,31 @@
 extern double algoHashTotal[16];
 extern int algoHashHits[16];
 // this code require c++11 compiler
-static const DefaultPortsMap defaultPortsMap = {
+const DefaultPortsMap ParamsConst::defaultPortsMap = {
 		{"main", 18018},
 		{"test", 18019},
 		{"regtest", 18020}
 };
 
-static const HashGenesisBlockMap hashGenesisBlockMap = {
+const HashGenesisBlockMap ParamsConst::hashGenesisBlockMap = {
 		{"main", "0x"},
 		{"test", "0x"},
 		{"regtest", "0x"}
 };
 
-static const HashMerkleRootkMap hashMerkleRootMap = {
+const HashMerkleRootkMap ParamsConst::hashMerkleRootMap = {
 		{"main", "0x"},
 		{"test", "0x"},
 		{"regtest", "0x"}
 };
 
-static const StartTimeMap startTimeMap = {
+const StartTimeMap ParamsConst::startTimeMap = {
 		{"main", 0},
 		{"test", 0},
 		{"regtest", 0}
 };
 
-static const  NounceMap nounceMap = {
+const NounceMap ParamsConst::nounceMap = {
 		{"main", 0},
 		{"test", 0},
 		{"regtest", 0}
@@ -170,8 +170,8 @@ public:
 
 		// By default assume that the signatures in ancestors of this block are valid.
 		consensus.defaultAssumeValid = uint256S("0x00");
-		int startTime = startTimeMap[network];
-		int nounce = nounceMap[network];
+		int startTime = ParamsConst::startTimeMap[network];
+		int nounce = ParamsConst::nounceMap[network];
 		int blockReward = BLOCK_REWARD_MAP[REWARD_BLOCK_KEYS[1]];
 		genesis = CreateGenesisBlock(startTime, nounce, 0x1e00ffff, 4, blockReward * COIN);
 		consensus.hashGenesisBlock = genesis.GetHash();
@@ -181,7 +181,7 @@ public:
 		checkGenesis();
         vSeeds.emplace_back("seed-helios.helioscoin.org", false);
         vSeeds.emplace_back("seed-helios.bitactivate.com", false);
-		nDefaultPort = defaultPortsMap[network];
+		nDefaultPort = ParamsConst::defaultPortsMap[network];
 		checkPoints();
 
         fDefaultConsistencyChecks = false;
@@ -190,8 +190,8 @@ public:
 	}
 
 	void checkGenesis() {
-		std::String hashGenesisBlock = hashGenesisBlockMap[strNetworkID];
-		std::String hashMerkleRoot = hashMerkleRootMap[strNetworkID];
+		std::String hashGenesisBlock = ParamsConst::hashGenesisBlockMap[strNetworkID];
+		std::String hashMerkleRoot = ParamsConst::hashMerkleRootMap[strNetworkID];
 		assert(consensus.hashGenesisBlock == uint256S(hashGenesisBlock));
 		assert(genesis.hashMerkleRoot == uint256S(hashGenesisBlock));
 	}

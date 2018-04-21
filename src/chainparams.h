@@ -42,6 +42,15 @@ struct ChainTxData {
     double dTxRate;
 };
 
+class ParamsConst {
+public:
+	static HashGenesisBlockMap hashGenesisBlockMap;
+	static HashMerkleRootkMap hashMerkleRootMap;
+	static DefaultPortsMap defaultPortsMap;
+	static StartTimeMap startTimeMap;
+	static NounceMap nounceMap;
+};
+
 /**
  * CChainParams defines various tweakable parameters of a given instance of the
  * Helios system. There are three: the main network on which people trade goods
