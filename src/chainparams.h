@@ -27,7 +27,11 @@ struct SeedSpec6 {
 };
 
 typedef std::map<int, uint256> MapCheckpoints;
-
+typedef std::map<std::string, std::string> HashGenesisBlockMap;
+typedef std::map<std::string, std::string> HashMerkleRootkMap;
+typedef std::map<std::string, int> DefaultPortsMap;
+typedef std::map<std::string, int> StartTimeMap;
+typedef std::map<std::string, int> NounceMap;
 struct CCheckpointData {
     MapCheckpoints mapCheckpoints;
 };
@@ -36,20 +40,6 @@ struct ChainTxData {
     int64_t nTime;
     int64_t nTxCount;
     double dTxRate;
-};
-
-class ParamsConst {
-	typedef std::map<std::string, std::string> HashGenesisBlockMap;
-	typedef std::map<std::string, std::string> HashMerkleRootkMap;
-	typedef std::map<std::string, int> DefaultPortsMap;
-	typedef std::map<std::string, int> StartTimeMap;
-	typedef std::map<std::string, int> NounceMap;
-
-	static HashGenesisBlockMap hashGenesisBlockMap;
-	static HashMerkleRootkMap hashMerkleRootMap;
-	static DefaultPortsMap defaultPortsMap;
-	static StartTimeMap startTimeMap;
-	static NounceMap nounceMap;
 };
 
 /**

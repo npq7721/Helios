@@ -19,31 +19,31 @@
 extern double algoHashTotal[16];
 extern int algoHashHits[16];
 // this code require c++11 compiler
-const ParamsConst::DefaultPortsMap ParamsConst::defaultPortsMap = {
+static const DefaultPortsMap defaultPortsMap = {
 		{"main", 18018},
 		{"test", 18019},
 		{"regtest", 18020}
 };
 
-const ParamsConst::HashGenesisBlockMap ParamsConst::hashGenesisBlockMap = {
+static const HashGenesisBlockMap hashGenesisBlockMap = {
 		{"main", "0x"},
 		{"test", "0x"},
 		{"regtest", "0x"}
 };
 
-const ParamsConst::HashMerkleRootkMap ParamsConst::hashMerkleRootMap = {
+static const HashMerkleRootkMap hashMerkleRootMap = {
 		{"main", "0x"},
 		{"test", "0x"},
 		{"regtest", "0x"}
 };
 
-const ParamsConst::StartTimeMap ParamsConst::startTimeMap = {
+static const StartTimeMap startTimeMap = {
 		{"main", 0},
 		{"test", 0},
 		{"regtest", 0}
 };
 
-const ParamsConst::NounceMap ParamsConst::nounceMap = {
+static const  NounceMap nounceMap = {
 		{"main", 0},
 		{"test", 0},
 		{"regtest", 0}

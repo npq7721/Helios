@@ -8,6 +8,7 @@
 #define helios_AMOUNT_H
 
 #include <stdint.h>
+#include <map>
 
 /** Amount in satoshis (Can be negative) */
 typedef int64_t CAmount;
@@ -15,6 +16,7 @@ typedef std::map<int, int> BlockRewardMap;
 
 static const CAmount COIN = 100000000;
 static const CAmount CENT = 1000000;
+static const int MAX_SUPPLY = 100000000;
 static const BlockRewardMap BLOCK_REWARD_MAP = {
 		{86400, 300},
 		{172800, 150}
