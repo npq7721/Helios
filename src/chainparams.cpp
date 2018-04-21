@@ -170,8 +170,8 @@ public:
 
 		// By default assume that the signatures in ancestors of this block are valid.
 		consensus.defaultAssumeValid = uint256S("0x00");
-		int startTime = ParamsConst::startTimeMap[network];
-		int nounce = ParamsConst::nounceMap[network];
+		int startTime = startTimeMap[network];
+		int nounce = nounceMap[network];
 		int blockReward = BLOCK_REWARD_MAP[REWARD_BLOCK_KEYS[1]];
 		genesis = CreateGenesisBlock(startTime, nounce, 0x1e00ffff, 4, blockReward * COIN);
 		consensus.hashGenesisBlock = genesis.GetHash();
@@ -181,7 +181,7 @@ public:
 		checkGenesis();
         vSeeds.emplace_back("seed-helios.helioscoin.org", false);
         vSeeds.emplace_back("seed-helios.bitactivate.com", false);
-		nDefaultPort = ParamsConst::defaultPortsMap[network];
+		nDefaultPort = defaultPortsMap[network];
 		checkPoints();
 
         fDefaultConsistencyChecks = false;
@@ -190,8 +190,8 @@ public:
 	}
 
 	void checkGenesis() {
-		std::String hashGenesisBlock = ParamsConst::hashGenesisBlockMap[strNetworkID];
-		std::String hashMerkleRoot = ParamsConst::hashMerkleRootMap[strNetworkID];
+		std::String hashGenesisBlock = hashGenesisBlockMap[strNetworkID];
+		std::String hashMerkleRoot = hashMerkleRootMap[strNetworkID];
 		assert(consensus.hashGenesisBlock == uint256S(hashGenesisBlock));
 		assert(genesis.hashMerkleRoot == uint256S(hashGenesisBlock));
 	}
