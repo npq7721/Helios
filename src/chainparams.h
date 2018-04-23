@@ -14,6 +14,7 @@
 
 #include <memory>
 #include <vector>
+using namespace std;
 
 struct CDNSSeedData {
     std::string host;
@@ -26,12 +27,20 @@ struct SeedSpec6 {
     uint16_t port;
 };
 
-typedef std::map<int, uint256> MapCheckpoints;
-typedef std::map<std::string, std::string> HashGenesisBlockMap;
-typedef std::map<std::string, std::string> HashMerkleRootkMap;
-typedef std::map<std::string, int> DefaultPortsMap;
-typedef std::map<std::string, int> StartTimeMap;
-typedef std::map<std::string, int> NounceMap;
+typedef map<int, uint256> MapCheckpoints;
+typedef map<std::string, std::string> HashGenesisBlockMap;
+typedef map<std::string, std::string> HashMerkleRootkMap;
+typedef map<std::string, int> DefaultPortsMap;
+typedef map<std::string, int> StartTimeMap;
+typedef map<std::string, int> NounceMap;
+
+struct ParamsConst {
+	HashGenesisBlockMap hashGenesisBlockMap;
+	HashMerkleRootkMap hashMerkleRootMap;
+	DefaultPortsMap defaultPortsMap;
+	StartTimeMap startTimeMap;
+	NounceMap nounceMap;
+};
 struct CCheckpointData {
     MapCheckpoints mapCheckpoints;
 };
@@ -42,14 +51,6 @@ struct ChainTxData {
     double dTxRate;
 };
 
-class ParamsConst {
-public:
-	static HashGenesisBlockMap hashGenesisBlockMap;
-	static HashMerkleRootkMap hashMerkleRootMap;
-	static DefaultPortsMap defaultPortsMap;
-	static StartTimeMap startTimeMap;
-	static NounceMap nounceMap;
-};
 
 /**
  * CChainParams defines various tweakable parameters of a given instance of the

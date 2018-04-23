@@ -12,43 +12,41 @@
 #include "arith_uint256.h"
 
 #include <assert.h>
+#include <boost/assign/list_of.hpp>
 
 #include "chainparamsseeds.h"
 
 //TODO: Take these out
 extern double algoHashTotal[16];
 extern int algoHashHits[16];
-// this code require c++11 compiler
-ParamsConst::defaultPortsMap = {
-		{"main", 18018},
-		{"test", 18019},
-		{"regtest", 18020}
-};
+static const ParamsConst PARAM_CONST = {
+	//hashGenesisBlockMap
+	boost::assign::map_list_of
+	("main", "0x")
+	("test", "0x")
+	("regtest", "0x"),
+	//hashMerkleRootMap
+	boost::assign::map_list_of
+	("main", "0x")
+	("test", "0x")
+	("regtest", "0x"),
+	//defaultPortsMap
+	boost::assign::map_list_of
+	("main", 18018)
+	("test", 18019)
+	("regtest", 18020),
+	//startTimeMap
+	boost::assign::map_list_of
+	("main", 0)
+	("test", 0)
+	("regtest", 0),
+	//nounceMap
+	boost::assign::map_list_of
+	("main", 0)
+	("test", 0)
+	("regtest", 0),
 
-ParamsConst::hashGenesisBlockMap = {
-		{"main", "0x"},
-		{"test", "0x"},
-		{"regtest", "0x"}
 };
-
-ParamsConst::hashMerkleRootMap = {
-		{"main", "0x"},
-		{"test", "0x"},
-		{"regtest", "0x"}
-};
-
-ParamsConst::startTimeMap = {
-		{"main", 0},
-		{"test", 0},
-		{"regtest", 0}
-};
-
-ParamsConst::nounceMap = {
-		{"main", 0},
-		{"test", 0},
-		{"regtest", 0}
-};
-
 static const bool GENERATE_HASH = true;
 
 
@@ -170,8 +168,8 @@ public:
 
 		// By default assume that the signatures in ancestors of this block are valid.
 		consensus.defaultAssumeValid = uint256S("0x00");
-		int startTime = ParamsConst::startTimeMap[network];
-		int nounce = ParamsConst::nounceMap[network];
+		int startTime = PARAM_CONST->startTimeMap[network];
+		int nounce = PARAM_CONST->nounceMap[network];
 		int blockReward = BLOCK_REWARD_MAP[REWARD_BLOCK_KEYS[1]];
 		genesis = CreateGenesisBlock(startTime, nounce, 0x1e00ffff, 4, blockReward * COIN);
 		consensus.hashGenesisBlock = genesis.GetHash();
@@ -181,7 +179,7 @@ public:
 		checkGenesis();
         vSeeds.emplace_back("seed-helios.helioscoin.org", false);
         vSeeds.emplace_back("seed-helios.bitactivate.com", false);
-		nDefaultPort = ParamsConst::defaultPortsMap[network];
+		nDefaultPort = PARAM_CONST->defaultPortsMap[network];
 		checkPoints();
 
         fDefaultConsistencyChecks = false;
@@ -190,8 +188,8 @@ public:
 	}
 
 	void checkGenesis() {
-		std::String hashGenesisBlock = ParamsConst::hashGenesisBlockMap[strNetworkID];
-		std::String hashMerkleRoot = ParamsConst::hashMerkleRootMap[strNetworkID];
+		std::String hashGenesisBlock = PARAM_CONST->hashGenesisBlockMap[strNetworkID];
+		std::String hashMerkleRoot = PARAM_CONST->hashMerkleRootMap[strNetworkID];
 		assert(consensus.hashGenesisBlock == uint256S(hashGenesisBlock));
 		assert(genesis.hashMerkleRoot == uint256S(hashGenesisBlock));
 	}
