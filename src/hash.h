@@ -72,6 +72,65 @@ GLOBAL sph_echo512_context      z_echo;
 #define ZJH (memcpy(&ctx_jh, &z_jh, sizeof(z_jh)))
 #define ZKECCAK (memcpy(&ctx_keccak, &z_keccak, sizeof(z_keccak)))
 #define ZSKEIN (memcpy(&ctx_skein, &z_skein, sizeof(z_skein)))
+
+struct ContextHash {
+	void* contextObj;
+	void (*initFunc)(void* contextObj);
+	void (*calculateFunc)(void* contextObj, const void* toHash, size_t lenToHash);
+	void (*closeFunc)(void* contextObj, void* hash);
+	ContextHash(void* contextObj,
+			void (*initFunc)(void* contextObj),
+			void (*calculateFunc)(void* contextObj, const void* toHash, size_t lenToHash),
+			void (*closeFunc)(void* contextObj, void* hash)){
+		this->contextObj = contextObj;
+		this->initFunc = initFunc;
+		this->calculateFunc = calculateFunc;
+		this->closeFunc = closeFunc;
+	};
+	~ContextHash() {
+
+	}
+	void calculateHash( const void* toHash, size_t lenToHash, void* hash) {
+		initFunc(contextObj);
+		calculateFunc(contextObj, toHash, lenToHash);
+		closeFunc(contextObj, hash);
+	}
+};
+
+extern std::vector<ContextHash> initContextList();
+/*
+extern void calculateBlake512Hash(void* conextObj, const void* toHash, int lenToHash, uint512* hash);
+extern void calculateBmw512Hash(void* conextObj, const void* toHash, int lenToHash, uint512* hash);
+extern void calculateJh512Hash(void* conextObj, const void* toHash, int lenToHash, uint512* hash);
+extern void calculateGroest512Hash(void* conextObj, const void* toHash, int lenToHash, uint512* hash);
+extern void calculateKeccak512Hash(void* conextObj, const void* toHash, int lenToHash, uint512* hash);
+extern void calculateSkein512Hash(void* conextObj, const void* toHash, int lenToHash, uint512* hash);
+extern void calculateLuffa512Hash(void* conextObj, const void* toHash, int lenToHash, uint512* hash);
+extern void calculateCubehash512Hash(void* conextObj, const void* toHash, int lenToHash, uint512* hash);
+extern void calculateShavite512Hash(void* conextObj, const void* toHash, int lenToHash, uint512* hash);
+extern void calculateSimd512Hash(void* conextObj, const void* toHash, int lenToHash, uint512* hash);
+extern void calculateEcho512Hash(void* conextObj, const void* toHash, int lenToHash, uint512* hash);
+extern void calculateHamsi512Hash(void* conextObj, const void* toHash, int lenToHash, uint512* hash);
+extern void calculateFugue512Hash(void* conextObj, const void* toHash, int lenToHash, uint512* hash);
+extern void calculateShabal512Hash(void* conextObj, const void* toHash, int lenToHash, uint512* hash);
+extern void calculateWhirlpool512Hash(void* conextObj, const void* toHash, int lenToHash, uint512* hash);
+extern void calculateSha512Hash(void* conextObj, const void* toHash, int lenToHash, uint512* hash);
+*/
+/*
+template<typename HashContext>
+class BasicAlgoHash {
+protected:
+	HashContext context;
+public:
+	BasicAlgoHash(){};
+	BasicAlgoHash(const BasicAlgoHash<HashContext> &algo) {};
+	~BasicAlgoHash(){
+		//delete []context;
+	};
+	void calculateHash(const void* toHash, int lenToHash, uint512* hash);
+	//BasicAlgoHash<HashContext>& operator=(const BasicAlgoHash<HashContext>& algoHash);
+};*/
+
 /** A hasher class for Helios's 256-bit hash (double SHA-256). */
 class CHash256 {
 private:
@@ -331,6 +390,12 @@ public:
     uint64_t Finalize() const;
 };
 
+class SolisHash {
+public:
+	template<typename T1>
+	static inline uint256 HashSolis(const T1 pbegin, const T1 pend, const uint256 PrevBlockHash);
+};
+
 /** Optimized SipHash-2-4 implementation for uint256.
  *
  *  It is identical to:
@@ -480,6 +545,40 @@ inline uint256 HashX16R(const T1 pbegin, const T1 pend, const uint256 PrevBlockH
                 sph_sha512_close(&ctx_sha512, static_cast<void*>(&hash[i]));
                 break;
         }
+    }
+
+    return hash[15].trim256();
+}
+/*
+class Blake512Algo : public BasicAlgoHash<sph_blake512_context> {
+public:
+	BasicAlgoHash(Blake512Algo& algo){
+
+	}
+	void calculateHash(const void* toHash, int lenToHash, uint512* hash);
+};*/
+
+
+template<typename T1>
+inline uint256 HashSolis(const T1 pbegin, const T1 pend, const uint256 PrevBlockHash)
+{
+    int hashSelection;
+    std::vector<ContextHash> algoHashes = initContextList();
+    static unsigned char pblank[1];
+    uint512 hash[16];
+    for (int i=0;i<16;i++)
+    {
+        const void *toHash;
+        int lenToHash;
+        if (i == 0) {
+            toHash = (pbegin == pend ? pblank : static_cast<const void*>(&pbegin[0]));
+            lenToHash = (pend - pbegin) * sizeof(pbegin[0]);
+        } else {
+            toHash = static_cast<const void*>(&hash[i-1]);
+            lenToHash = 64;
+        }
+        hashSelection = GetHashSelection(PrevBlockHash, i);
+        algoHashes[hashSelection].calculateHash(&toHash,lenToHash, &hash[i]);
     }
 
     return hash[15].trim256();
