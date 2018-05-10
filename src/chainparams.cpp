@@ -15,11 +15,6 @@
 
 #include "chainparamsseeds.h"
 
-//TODO: Take these out
-extern double algoHashTotal[16];
-extern int algoHashHits[16];
-
-
 static CBlock CreateGenesisBlock(const char* pszTimestamp, const CScript& genesisOutputScript, uint32_t nTime, uint32_t nNonce, uint32_t nBits, int32_t nVersion, const CAmount& genesisReward)
 {
     CMutableTransaction txNew;
@@ -199,7 +194,7 @@ public:
         pchMessageStart[1] = 0x41;
         pchMessageStart[2] = 0x56;
         pchMessageStart[3] = 0x4e;
-        nDefaultPort = 8767;
+        nDefaultPort = 8707;
         nPruneAfterHeight = 100000;
                   
         genesis = CreateGenesisBlock(1525759804, 2350601, 0x1e00ffff, 4, 5000 * COIN);
@@ -282,7 +277,7 @@ public:
         pchMessageStart[1] = 0x56;
         pchMessageStart[2] = 0x4E;
         pchMessageStart[3] = 0x54;
-        nDefaultPort = 18767;
+        nDefaultPort = 18707;
         nPruneAfterHeight = 1000;
 
         genesis = CreateGenesisBlock(1525759804, 2350601, 0x1e00ffff, 4, 5000 * COIN);
@@ -363,7 +358,7 @@ public:
         pchMessageStart[1] = 0x52;
         pchMessageStart[2] = 0x4F;
         pchMessageStart[3] = 0x57;
-        nDefaultPort = 18444;
+        nDefaultPort = 18404;
         nPruneAfterHeight = 1000;
 
         genesis = CreateGenesisBlock(1510082300, 2, 0x207fffff, 4, 5000 * COIN);
