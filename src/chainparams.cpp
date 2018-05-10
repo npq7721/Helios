@@ -101,6 +101,44 @@ bool CChainParams::CSVEnabled() const{
 	return consensus.nCSVEnabled;
 }
 
+void CChainParams::printGenesisBlock() {
+	consensus.hashGenesisBlock = uint256S("0x");
+	std::cout << std::string("Begin calculating Mainnet Genesis Block:\n");
+	if (true && (genesis.GetHash() != consensus.hashGenesisBlock)) {
+	LogPrintf("Calculating Mainnet Genesis Block:\n");
+	arith_uint256 hashTarget = arith_uint256().SetCompact(genesis.nBits);
+	uint256 hash;
+	genesis.nNonce = 0;
+	// This will figure out a valid hash and Nonce if you're
+	// creating a different genesis block:
+	// uint256 hashTarget = CBigNum().SetCompact(genesis.nBits).getuint256();
+	// hashTarget.SetCompact(genesis.nBits, &fNegative, &fOverflow).getuint256();
+	// while (genesis.GetHash() > hashTarget)
+	while (UintToArith256(genesis.GetHash()) > hashTarget)
+	{
+		++genesis.nNonce;
+		if (genesis.nNonce == 0)
+		{
+			LogPrintf("NONCE WRAPPED, incrementing time");
+			std::cout << std::string("NONCE WRAPPED, incrementing time:\n");
+			++genesis.nTime;
+		}
+		if (genesis.nNonce % 10000 == 0)
+		{
+			LogPrintf("Mainnet: nonce %08u: hash = %s \n", genesis.nNonce, genesis.GetHash().ToString().c_str());
+			// std::cout << strNetworkID << " nonce: " << genesis.nNonce << " time: " << genesis.nTime << " hash: " << genesis.GetHash().ToString().c_str() << "\n";
+		}
+	}
+	std::cout << "Mainnet ---\n";
+	std::cout << "  nonce: " << genesis.nNonce <<  "\n";
+	std::cout << "   time: " << genesis.nTime << "\n";
+	std::cout << "   hash: " << genesis.GetHash().ToString().c_str() << "\n";
+	std::cout << "   merklehash: "  << genesis.hashMerkleRoot.ToString().c_str() << "\n";
+	// Mainnet --- nonce: 296277 time: 1390095618 hash: 000000bdd771b14e5a031806292305e563956ce2584278de414d9965f6ab54b0
+	}
+	std::cout << std::string("Finished calculating Mainnet Genesis Block:\n");
+}
+
 
 /**
  * Main network
@@ -164,13 +202,13 @@ public:
         nDefaultPort = 8767;
         nPruneAfterHeight = 100000;
                   
-        genesis = CreateGenesisBlock(1514999494, 25023712, 0x1e00ffff, 4, 5000 * COIN); 
+        genesis = CreateGenesisBlock(1525759804, 2350601, 0x1e00ffff, 4, 5000 * COIN);
 
         consensus.hashGenesisBlock = genesis.GetHash();        
-        //std::cout << consensus.hashGenesisBlock.GetHex() << "\n";
-        //std::cout << "Merkle: " << genesis.hashMerkleRoot.GetHex() << "\n";
-
-        assert(consensus.hashGenesisBlock == uint256S("0x0000006b444bc2f2ffe627be9d9e7e7a0730000870ef6eb6da46c8eae389df90"));
+        std::cout << consensus.hashGenesisBlock.GetHex() << "\n";
+        std::cout << "Merkle: " << genesis.hashMerkleRoot.GetHex() << "\n";
+        //printGenesisBlock();
+        assert(consensus.hashGenesisBlock == uint256S("0x0000008d383f3a2871270d48b13dceab67841d1aa4b5d45a42643c83e725fb79"));
         assert(genesis.hashMerkleRoot == uint256S("0x28ff00a867739a352523808d301f504bc4547699398d70faf2266a8bae5f3516"));
 
         vSeeds.emplace_back("seed-helios.helioscoin.org", false); 
@@ -199,7 +237,7 @@ public:
 
         chainTxData = ChainTxData{
             // Update as we know more about the contents of the Helios chain
-            1509572692, // * UNIX timestamp of last known number of transactions
+        	1525759804, // * UNIX timestamp of last known number of transactions
             1,          // * total number of transactions between genesis and that timestamp
                         //   (the tx=... number in the SetBestChain debug.log lines)
             3.1         // * estimated number of transactions per second after that timestamp
@@ -247,11 +285,11 @@ public:
         nDefaultPort = 18767;
         nPruneAfterHeight = 1000;
 
-        genesis = CreateGenesisBlock(1517350340, 4791361, 0x1e00ffff, 4, 5000 * COIN); 
+        genesis = CreateGenesisBlock(1525759804, 2350601, 0x1e00ffff, 4, 5000 * COIN);
         consensus.hashGenesisBlock = genesis.GetHash();
 
         //Test MerkleRoot and GenesisBlock
-        assert(consensus.hashGenesisBlock == uint256S("0x000000055c6b201ac99ed634953f92bd52239f5b26e090ce3caab6ec81bec921"));
+        assert(consensus.hashGenesisBlock == uint256S("0x0000008d383f3a2871270d48b13dceab67841d1aa4b5d45a42643c83e725fb79"));
         assert(genesis.hashMerkleRoot == uint256S("0x28ff00a867739a352523808d301f504bc4547699398d70faf2266a8bae5f3516"));
 
         vFixedSeeds.clear();

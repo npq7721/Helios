@@ -89,6 +89,7 @@ public:
     bool BIP65();
     bool BIP66();
     bool CSVEnabled() const;
+    void printGenesisBlock();
 protected:
     CChainParams() {}
 
