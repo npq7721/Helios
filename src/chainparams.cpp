@@ -222,7 +222,7 @@ public:
         fDefaultConsistencyChecks = false;
         fRequireStandard = true;
         fMineBlocksOnDemand = false;
-        fMiningRequiresPeers = false;
+        fMiningRequiresPeers = true;
 
         checkpointData = (CCheckpointData) {
             {
