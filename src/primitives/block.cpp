@@ -10,10 +10,16 @@
 #include "tinyformat.h"
 #include "utilstrencodings.h"
 #include "crypto/common.h"
+#include "validation.h"
+
 
 uint256 CBlockHeader::GetHash() const
 {
-    return HashSolis(BEGIN(nVersion), END(nNonce), hashPrevBlock);
+	//int height = chainActive.Height();
+	//if((height % 30) == 0) {
+	int	currentSelectedGroup = HashSelection::getGroupHashSelection(hashPrevBlock);
+	//}
+    return HashSolis(BEGIN(nVersion), END(nNonce), hashPrevBlock, currentSelectedGroup);
 }
 
 std::string CBlock::ToString() const

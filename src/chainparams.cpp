@@ -197,13 +197,13 @@ public:
         nDefaultPort = 8707;
         nPruneAfterHeight = 100000;
                   
-        genesis = CreateGenesisBlock(1525759804, 2350601, 0x1e00ffff, 4, 5000 * COIN);
+        genesis = CreateGenesisBlock(1525759804, 25855621, 0x1e00ffff, 4, 5000 * COIN);
 
         consensus.hashGenesisBlock = genesis.GetHash();        
         std::cout << consensus.hashGenesisBlock.GetHex() << "\n";
         std::cout << "Merkle: " << genesis.hashMerkleRoot.GetHex() << "\n";
         //printGenesisBlock();
-        assert(consensus.hashGenesisBlock == uint256S("0x0000008d383f3a2871270d48b13dceab67841d1aa4b5d45a42643c83e725fb79"));
+        assert(consensus.hashGenesisBlock == uint256S("0x000000fe28106801bb00c80304c9e6cad5a58da44f29f04e55c0741094f83a3e"));
         assert(genesis.hashMerkleRoot == uint256S("0x28ff00a867739a352523808d301f504bc4547699398d70faf2266a8bae5f3516"));
 
         vSeeds.emplace_back("seed-helios.helioscoin.org", false); 
@@ -222,7 +222,7 @@ public:
         fDefaultConsistencyChecks = false;
         fRequireStandard = true;
         fMineBlocksOnDemand = false;
-        fMiningRequiresPeers = true;
+        fMiningRequiresPeers = false;
 
         checkpointData = (CCheckpointData) {
             {
@@ -280,11 +280,11 @@ public:
         nDefaultPort = 18707;
         nPruneAfterHeight = 1000;
 
-        genesis = CreateGenesisBlock(1525759804, 2350601, 0x1e00ffff, 4, 5000 * COIN);
+        genesis = CreateGenesisBlock(1525759804, 25855621, 0x1e00ffff, 4, 5000 * COIN);
         consensus.hashGenesisBlock = genesis.GetHash();
 
         //Test MerkleRoot and GenesisBlock
-        assert(consensus.hashGenesisBlock == uint256S("0x0000008d383f3a2871270d48b13dceab67841d1aa4b5d45a42643c83e725fb79"));
+        assert(consensus.hashGenesisBlock == uint256S("0x000000fe28106801bb00c80304c9e6cad5a58da44f29f04e55c0741094f83a3e"));
         assert(genesis.hashMerkleRoot == uint256S("0x28ff00a867739a352523808d301f504bc4547699398d70faf2266a8bae5f3516"));
 
         vFixedSeeds.clear();

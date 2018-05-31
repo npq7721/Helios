@@ -14,7 +14,9 @@
 #include "serialize.h"
 #include "uint256.h"
 #include "version.h"
-
+#include "hash_selection.h"
+//#include "validation.h"
+/*
 #include "crypto/sph_blake.h"
 #include "crypto/sph_bmw.h"
 #include "crypto/sph_groestl.h"
@@ -32,7 +34,7 @@
 #include "crypto/sph_whirlpool.h"
 extern "C" {
 #include "crypto/sph_sha2.h"
-}
+}*/
 #include <vector>
 
 typedef uint256 ChainCode;
@@ -41,159 +43,6 @@ typedef uint256 ChainCode;
 #else
 #define GLOBAL extern
 #endif
-
-/*
-GLOBAL sph_blake512_context     z_blake;
-GLOBAL sph_bmw512_context       z_bmw;
-GLOBAL sph_groestl512_context   z_groestl;
-GLOBAL sph_jh512_context        z_jh;
-GLOBAL sph_keccak512_context    z_keccak;
-GLOBAL sph_skein512_context     z_skein;
-GLOBAL sph_luffa512_context     z_luffa;
-GLOBAL sph_cubehash512_context  z_cubehash;
-GLOBAL sph_shavite512_context   z_shavite;
-GLOBAL sph_simd512_context      z_simd;
-GLOBAL sph_echo512_context      z_echo;
-#define fillz() do { \
-    sph_blake512_init(&z_blake); \
-    sph_bmw512_init(&z_bmw); \
-    sph_groestl512_init(&z_groestl); \
-    sph_jh512_init(&z_jh); \
-    sph_keccak512_init(&z_keccak); \
-    sph_skein512_init(&z_skein); \
-    sph_luffa512_init(&z_luffa); \
-    sph_cubehash512_init(&z_cubehash); \
-    sph_shavite512_init(&z_shavite); \
-    sph_simd512_init(&z_simd); \
-    sph_echo512_init(&z_echo); \
-} while (0)
-#define ZBLAKE (memcpy(&ctx_blake, &z_blake, sizeof(z_blake)))
-#define ZBMW (memcpy(&ctx_bmw, &z_bmw, sizeof(z_bmw)))
-#define ZGROESTL (memcpy(&ctx_groestl, &z_groestl, sizeof(z_groestl)))
-#define ZJH (memcpy(&ctx_jh, &z_jh, sizeof(z_jh)))
-#define ZKECCAK (memcpy(&ctx_keccak, &z_keccak, sizeof(z_keccak)))
-#define ZSKEIN (memcpy(&ctx_skein, &z_skein, sizeof(z_skein)))
-*/
-
-typedef void (*voidFunc)(void);
-
-struct ContextHash {
-	void* contextObj;
-	void (*initFunc)(void* contextObj);
-	void (*calculateFunc)(void* contextObj, const void* toHash, size_t lenToHash);
-	void (*closeFunc)(void* contextObj, void* hash);
-	ContextHash(void* contextObj,
-			void (*initFunc)(void* contextObj),
-			void (*calculateFunc)(void* contextObj, const void* toHash, size_t lenToHash),
-			void (*closeFunc)(void* contextObj, void* hash)){
-		this->contextObj = contextObj;
-		this->initFunc = initFunc;
-		this->calculateFunc = calculateFunc;
-		this->closeFunc = closeFunc;
-	}
-
-	void init(void* contextObj,
-				void (*initFunc)(void* contextObj),
-				void (*calculateFunc)(void* contextObj, const void* toHash, size_t lenToHash),
-				void (*closeFunc)(void* contextObj, void* hash)){
-			this->contextObj = contextObj;
-			this->initFunc = initFunc;
-			this->calculateFunc = calculateFunc;
-			this->closeFunc = closeFunc;
-		}
-	ContextHash() {
-	}
-	~ContextHash() {
-
-	}
-	void calculateHash( const void* toHash, size_t lenToHash, void* hash) {
-		initFunc(contextObj);
-		calculateFunc(contextObj, toHash, lenToHash);
-		closeFunc(contextObj, hash);
-	}
-};
-
-struct ContextList {
-	static void initContext(ContextList &contextList, int groupNum) {
-		switch(groupNum) {
-		case 1:
-			contextList.initHashx16r();
-			break;
-		case 2:
-			contextList.initGroup1();
-			break;
-		}
-	}
-
-	sph_blake512_context     ctx_blake;      //0
-	sph_bmw512_context       ctx_bmw;        //1
-	sph_groestl512_context   ctx_groestl;    //2
-	sph_jh512_context        ctx_jh;         //3
-	sph_keccak512_context    ctx_keccak;     //4
-	sph_skein512_context     ctx_skein;      //5
-	sph_luffa512_context     ctx_luffa;      //6
-	sph_cubehash512_context  ctx_cubehash;   //7
-	sph_shavite512_context   ctx_shavite;    //8
-	sph_simd512_context      ctx_simd;       //9
-	sph_echo512_context      ctx_echo;       //A
-	sph_hamsi512_context     ctx_hamsi;      //B
-	sph_fugue512_context     ctx_fugue;      //C
-	sph_shabal512_context    ctx_shabal;     //D
-	sph_whirlpool_context    ctx_whirlpool;  //E
-	sph_sha512_context       ctx_sha512;     //F
-	std::vector<ContextHash> algoHashes;
-
-	void initHashx16r(void) {
-		ContextHash blakeContext(&ctx_blake, sph_blake512_init, sph_blake512, sph_blake512_close);
-		ContextHash bmwContext(&ctx_bmw, sph_bmw512_init, sph_bmw512, sph_bmw512_close);
-		ContextHash groestlContext(&ctx_groestl, sph_groestl512_init,sph_groestl512, sph_groestl512_close);
-		ContextHash jhContext(&ctx_jh,sph_jh512_init,sph_jh512,sph_jh512_close);
-		ContextHash keccakConext(&ctx_keccak, sph_keccak512_init, sph_keccak512, sph_keccak512_close);
-		ContextHash skeinContext(&ctx_skein, sph_skein512_init,sph_skein512,sph_skein512_close);
-		ContextHash luffaContext(&ctx_luffa, sph_luffa512_init,sph_luffa512,sph_luffa512_close);
-		ContextHash cubehashContext(&ctx_cubehash, sph_cubehash512_init,sph_cubehash512,sph_cubehash512_close);
-		ContextHash shaviteContext(&ctx_shavite, sph_shavite512_init, sph_shavite512, sph_shavite512_close);
-		ContextHash simdContext(&ctx_simd, sph_simd512_init, sph_simd512, sph_simd512_close);
-		ContextHash echoContext(&ctx_echo, sph_echo512_init, sph_echo512, sph_echo512_close);
-		ContextHash hamsiContext(&ctx_hamsi, sph_hamsi512_init, sph_hamsi512, sph_hamsi512_close);
-		ContextHash fugueContext(&ctx_fugue, sph_fugue512_init, sph_fugue512, sph_fugue512_close);
-		ContextHash shabalContext(&ctx_shabal, sph_shabal512_init, sph_shabal512, sph_shabal512_close);
-		ContextHash whirlpoolContext(&ctx_whirlpool, sph_whirlpool_init, sph_whirlpool, sph_whirlpool_close);
-		ContextHash sha512Context(&ctx_sha512, sph_sha512_init, sph_sha512, sph_sha512_close);
-		//std::vector<ContextHash> algoHashes;
-		algoHashes.push_back(blakeContext);
-		algoHashes.push_back(bmwContext);
-		algoHashes.push_back(groestlContext);
-		algoHashes.push_back(jhContext);
-		algoHashes.push_back(keccakConext);
-		algoHashes.push_back(skeinContext);
-		algoHashes.push_back(luffaContext);
-		algoHashes.push_back(cubehashContext);
-		algoHashes.push_back(shaviteContext);
-		algoHashes.push_back(simdContext);
-		algoHashes.push_back(echoContext);
-		algoHashes.push_back(hamsiContext);
-		algoHashes.push_back(fugueContext);
-		algoHashes.push_back(shabalContext);
-		algoHashes.push_back(whirlpoolContext);
-		algoHashes.push_back(sha512Context);
-	}
-
-	void initGroup1() {
-		ContextHash luffaContext(&ctx_luffa, sph_luffa512_init,sph_luffa512,sph_luffa512_close);
-		ContextHash cubehashContext(&ctx_cubehash, sph_cubehash512_init,sph_cubehash512,sph_cubehash512_close);
-		ContextHash shaviteContext(&ctx_shavite, sph_shavite512_init, sph_shavite512, sph_shavite512_close);
-		ContextHash simdContext(&ctx_simd, sph_simd512_init, sph_simd512, sph_simd512_close);
-		ContextHash echoContext(&ctx_echo, sph_echo512_init, sph_echo512, sph_echo512_close);
-		algoHashes.push_back(luffaContext);
-		algoHashes.push_back(cubehashContext);
-		algoHashes.push_back(shaviteContext);
-		algoHashes.push_back(simdContext);
-		algoHashes.push_back(echoContext);
-
-	}
-
-};
 
 
 /** A hasher class for Helios's 256-bit hash (double SHA-256). */
@@ -455,11 +304,6 @@ public:
     uint64_t Finalize() const;
 };
 
-class SolisHash {
-public:
-	template<typename T1>
-	static inline uint256 HashSolis(const T1 pbegin, const T1 pend, const uint256 PrevBlockHash);
-};
 
 /** Optimized SipHash-2-4 implementation for uint256.
  *
@@ -483,164 +327,16 @@ inline int GetHashSelection(const uint256 PrevBlockHash, int index) {
     return(hashSelection);
 }
 
-inline int GetSolisHashSelection(const uint256 PrevBlockHash, int index, int size) {
-    assert(index >= 0);
-    assert(index < size);
-    int startNibblesHash = 64 - size;
-    int hashSelection = PrevBlockHash.GetNibble(startNibblesHash + index);
-    hashSelection = hashSelection % size;
-    return(hashSelection);
-}
-
-
 template<typename T1>
-inline uint256 HashX16R(const T1 pbegin, const T1 pend, const uint256 PrevBlockHash)
+inline uint256 HashSolis(const T1 pbegin, const T1 pend, const uint256 PrevBlockHash, const int currentSelectedGroup)
 {
-//	static std::chrono::duration<double>[16];
-    int hashSelection;
-
-    sph_blake512_context     ctx_blake;      //0
-    sph_bmw512_context       ctx_bmw;        //1
-    sph_groestl512_context   ctx_groestl;    //2
-    sph_jh512_context        ctx_jh;         //3
-    sph_keccak512_context    ctx_keccak;     //4
-    sph_skein512_context     ctx_skein;      //5
-    sph_luffa512_context     ctx_luffa;      //6
-    sph_cubehash512_context  ctx_cubehash;   //7
-    sph_shavite512_context   ctx_shavite;    //8
-    sph_simd512_context      ctx_simd;       //9
-    sph_echo512_context      ctx_echo;       //A
-    sph_hamsi512_context     ctx_hamsi;      //B
-    sph_fugue512_context     ctx_fugue;      //C
-    sph_shabal512_context    ctx_shabal;     //D
-    sph_whirlpool_context    ctx_whirlpool;  //E
-    sph_sha512_context       ctx_sha512;     //F
-
-    static unsigned char pblank[1];
-    ContextHash blakeContext(&ctx_blake, sph_blake512_init, sph_blake512, sph_blake512_close);
-    uint512 hash[16];
-
-    for (int i=0;i<16;i++) 
-    {
-        const void *toHash;
-        int lenToHash;
-        if (i == 0) {
-            toHash = (pbegin == pend ? pblank : static_cast<const void*>(&pbegin[0]));
-            lenToHash = (pend - pbegin) * sizeof(pbegin[0]);
-        } else {
-            toHash = static_cast<const void*>(&hash[i-1]);
-            lenToHash = 64;
-        }
-
-        hashSelection = GetHashSelection(PrevBlockHash, i);
-
-        switch(hashSelection) {
-            case 0:
-            	blakeContext.calculateHash(toHash, lenToHash, &hash[i]);
-            	/*
-                sph_blake512_init(&ctx_blake);
-                sph_blake512 (&ctx_blake, toHash, lenToHash);
-                sph_blake512_close(&ctx_blake, static_cast<void*>(&hash[i]));
-                */
-                break;
-            case 1:
-                sph_bmw512_init(&ctx_bmw);
-                sph_bmw512 (&ctx_bmw, toHash, lenToHash);
-                sph_bmw512_close(&ctx_bmw, static_cast<void*>(&hash[i]));
-                break;
-            case 2:
-                sph_groestl512_init(&ctx_groestl);
-                sph_groestl512 (&ctx_groestl, toHash, lenToHash);
-                sph_groestl512_close(&ctx_groestl, static_cast<void*>(&hash[i]));
-                break;
-            case 3:
-                sph_jh512_init(&ctx_jh);
-                sph_jh512 (&ctx_jh, toHash, lenToHash);
-                sph_jh512_close(&ctx_jh, static_cast<void*>(&hash[i]));
-                break;
-            case 4:
-                sph_keccak512_init(&ctx_keccak);
-                sph_keccak512 (&ctx_keccak, toHash, lenToHash);
-                sph_keccak512_close(&ctx_keccak, static_cast<void*>(&hash[i]));
-                break;
-            case 5:
-                sph_skein512_init(&ctx_skein);
-                sph_skein512 (&ctx_skein, toHash, lenToHash);
-                sph_skein512_close(&ctx_skein, static_cast<void*>(&hash[i]));
-                break;
-            case 6:
-                sph_luffa512_init(&ctx_luffa);
-                sph_luffa512 (&ctx_luffa, toHash, lenToHash);
-                sph_luffa512_close(&ctx_luffa, static_cast<void*>(&hash[i]));
-                break;
-            case 7:
-                sph_cubehash512_init(&ctx_cubehash);
-                sph_cubehash512 (&ctx_cubehash, toHash, lenToHash);
-                sph_cubehash512_close(&ctx_cubehash, static_cast<void*>(&hash[i]));
-                break;
-            case 8:
-                sph_shavite512_init(&ctx_shavite);
-                sph_shavite512(&ctx_shavite, toHash, lenToHash);
-                sph_shavite512_close(&ctx_shavite, static_cast<void*>(&hash[i]));
-                break;
-            case 9:
-                sph_simd512_init(&ctx_simd);
-                sph_simd512 (&ctx_simd, toHash, lenToHash);
-                sph_simd512_close(&ctx_simd, static_cast<void*>(&hash[i]));
-                break;
-            case 10:
-                sph_echo512_init(&ctx_echo);
-                sph_echo512 (&ctx_echo, toHash, lenToHash);
-                sph_echo512_close(&ctx_echo, static_cast<void*>(&hash[i]));
-                break;
-           case 11:
-                sph_hamsi512_init(&ctx_hamsi);
-                sph_hamsi512 (&ctx_hamsi, toHash, lenToHash);
-                sph_hamsi512_close(&ctx_hamsi, static_cast<void*>(&hash[i]));
-                break;
-           case 12:
-                sph_fugue512_init(&ctx_fugue);
-                sph_fugue512 (&ctx_fugue, toHash, lenToHash);
-                sph_fugue512_close(&ctx_fugue, static_cast<void*>(&hash[i]));
-                break;
-           case 13:
-                sph_shabal512_init(&ctx_shabal);
-                sph_shabal512 (&ctx_shabal, toHash, lenToHash);
-                sph_shabal512_close(&ctx_shabal, static_cast<void*>(&hash[i]));
-                break;
-           case 14:
-                sph_whirlpool_init(&ctx_whirlpool);
-                sph_whirlpool(&ctx_whirlpool, toHash, lenToHash);
-                sph_whirlpool_close(&ctx_whirlpool, static_cast<void*>(&hash[i]));
-                break;
-           case 15:
-                sph_sha512_init(&ctx_sha512);
-                sph_sha512 (&ctx_sha512, toHash, lenToHash);
-                sph_sha512_close(&ctx_sha512, static_cast<void*>(&hash[i]));
-                break;
-        }
-    }
-
-    return hash[15].trim256();
-}
-/*
-class Blake512Algo : public BasicAlgoHash<sph_blake512_context> {
-public:
-	BasicAlgoHash(Blake512Algo& algo){
-
-	}
-	void calculateHash(const void* toHash, int lenToHash, uint512* hash);
-};*/
-
-template<typename T1>
-inline uint256 HashSolis(const T1 pbegin, const T1 pend, const uint256 PrevBlockHash)
-{
-    int hashSelection;
     ContextList cList;
-    ContextList::initContext(cList, 2);
+    ContextList::initContext(cList, currentSelectedGroup);
+    //int blockHeight = chainActive->Height();
     static unsigned char pblank[1];
-    int size = cList.algoHashes.size();
-    uint512 hash[size];
+    const int size = cList.algoHashes.size();
+    std::vector<uint512> hash(size);
+    HashSelection hashSelection(PrevBlockHash, size, INITIAL_GROUP[currentSelectedGroup]);
     for (int i=0;i<size;i++)
     {
         const void *toHash;
@@ -652,13 +348,9 @@ inline uint256 HashSolis(const T1 pbegin, const T1 pend, const uint256 PrevBlock
             toHash = static_cast<const void*>(&hash[i-1]);
             lenToHash = 64;
         }
-        //hashSelection = GetSolisHashSelection(PrevBlockHash, i, size);
-        hashSelection = GetSolisHashSelection(PrevBlockHash, i, size);
-        cList.algoHashes[hashSelection].calculateHash(toHash,lenToHash, &hash[i]);
+        //hashSelectionIndex = hashSelection.getHashSelection(i);
+        cList.algoHashes[i].calculateHash(toHash,lenToHash, &hash[i]);
     }
-   // free(hashes);
-    //free(algoHashes);
-    //algoHashes.clear();
     return hash[(size - 1)].trim256();
 }
 

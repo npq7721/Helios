@@ -33,6 +33,8 @@
 #include <univalue.h>
 
 extern uint64_t nHashesPerSec;
+extern std::string alsoHashString;
+extern double  nPowerUsage;
 
 unsigned int ParseConfirmTarget(const UniValue& value)
 {
@@ -224,6 +226,8 @@ UniValue getmininginfo(const JSONRPCRequest& request)
     obj.push_back(Pair("difficulty",       (double)GetDifficulty()));
     obj.push_back(Pair("networkhashps",    getnetworkhashps(request)));
     obj.push_back(Pair("hashespersec",     (uint64_t)nHashesPerSec));
+    obj.push_back(Pair("algos",     (std::string)alsoHashString));
+    obj.push_back(Pair("cpu_power_usage",     (double)nPowerUsage));
     obj.push_back(Pair("pooledtx",         (uint64_t)mempool.size()));
     obj.push_back(Pair("chain",            Params().NetworkIDString()));
     if (IsDeprecatedRPCEnabled("getmininginfo")) {

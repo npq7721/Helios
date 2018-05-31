@@ -27,8 +27,10 @@
 #include "util.h"
 #include "utilmoneystr.h"
 #include "validationinterface.h"
+#include "power_usage.h"
 
 #include "wallet/wallet.h"
+#include "power_usage.h"
 //#include "wallet/rpcwallet.h"
 
 
@@ -55,7 +57,8 @@ uint64_t nLastBlockWeight = 0;
 uint64_t nMiningTimeStart = 0;
 uint64_t nHashesPerSec = 0;
 uint64_t nHashesDone = 0;
-
+double  nPowerUsage = 0;
+std::string alsoHashString;
 
 int64_t UpdateTime(CBlockHeader* pblock, const Consensus::Params& consensusParams, const CBlockIndex* pindexPrev)
 {
@@ -581,7 +584,11 @@ void static HeliosMiner(const CChainParams& chainparams)
             }
             CBlock *pblock = &pblocktemplate->block;
             IncrementExtraNonce(pblock, pindexPrev, nExtraNonce);
-
+            int currentSelectedGroup = HashSelection::getGroupHashSelection(pblock->hashPrevBlock);
+            std::vector<int> groupIndexes = INITIAL_GROUP[currentSelectedGroup];
+            HashSelection hashSelection(pblock->hashPrevBlock,5, groupIndexes);
+            alsoHashString.clear();
+            alsoHashString.append(hashSelection.getHashSelectionString());
             LogPrintf("HeliosMiner -- Running miner with %u transactions in block (%u bytes)\n", pblock->vtx.size(),
                 ::GetSerializeSize(*pblock, SER_NETWORK, PROTOCOL_VERSION));
 
@@ -590,6 +597,7 @@ void static HeliosMiner(const CChainParams& chainparams)
             //
             int64_t nStart = GetTime();
             arith_uint256 hashTarget = arith_uint256().SetCompact(pblock->nBits);
+            CpuPower powerUsage("/home/tri/.helios", alsoHashString.c_str());
             while (true)
             {
 
@@ -616,7 +624,9 @@ void static HeliosMiner(const CChainParams& chainparams)
                     pblock->nNonce += 1;
                     nHashesDone += 1;
                     if (nHashesDone % 500000 == 0) {   //Calculate hashing speed
+
                         nHashesPerSec = nHashesDone / (((GetTimeMicros() - nMiningTimeStart) / 1000000) + 1);
+                        nPowerUsage = powerUsage.writeCurrentVaueToFile(nHashesPerSec);
                     } 
                     if ((pblock->nNonce & 0xFF) == 0)
                         break;
@@ -644,6 +654,7 @@ void static HeliosMiner(const CChainParams& chainparams)
                     hashTarget.SetCompact(pblock->nBits);
                 }
             }
+            powerUsage.closeStats();
         }
     }
     catch (const boost::thread_interrupted&)

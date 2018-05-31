@@ -160,6 +160,7 @@ helios_CORE_H = \
   validation.h \
   validationinterface.h \
   versionbits.h \
+  power_usage.h \
   wallet/coincontrol.h \
   wallet/crypter.h \
   wallet/db.h \
@@ -224,6 +225,7 @@ libhelios_server_a_SOURCES = \
   validation.cpp \
   validationinterface.cpp \
   versionbits.cpp \
+  power_usage.cpp \
   $(helios_CORE_H)
 
 if ENABLE_ZMQ
@@ -326,6 +328,8 @@ libhelios_consensus_a_SOURCES = \
   consensus/merkle.h \
   consensus/params.h \
   consensus/validation.h \
+  hash_selection.h \
+  hash_selection.cpp \
   hash.cpp \
   hash.h \
   prevector.h \
